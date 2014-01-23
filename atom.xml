@@ -4,7 +4,7 @@
   <title><![CDATA[George's dream port]]></title>
   <link href="http://puffsun.github.io/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-01-23T11:36:56+08:00</updated>
+  <updated>2014-01-23T13:31:39+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -12,6 +12,276 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Design Patterns]]></title>
+    <link href="http://puffsun.github.io/blog/2014/01/23/ruby-design-patterns/"/>
+    <updated>2014-01-23T13:27:14+08:00</updated>
+    <id>http://puffsun.github.io/blog/2014/01/23/ruby-design-patterns</id>
+    <content type="html"><![CDATA[<p>I just finished reading the great book <a href="http://www.amazon.com/Design-Patterns-Ruby-Russ-Olsen/dp/0321490452">Design Patterns in Ruby</a>. Actually just like me, most of developers know Design Patterns well, what I want to learn from the book is Design Patterns in Ruby style, there is a saying: <em>Just because you have duck-typing doesn&rsquo;t mean you can ignore common OO idioms!</em></p>
+
+<p>In this blog post, I&rsquo;m going to show you how to implement common design patterns in Ruby, without further ado, let&rsquo;s go!</p>
+
+<h4>Factory</h4>
+
+<p>The classic implementation in the book <a href="http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1390451541&amp;sr=1-1&amp;keywords=design+patterns">Design Patterns: Elements of Reusable Object-Oriented Software</a> is inheriance-based, this kind of style is hard to find in Ruby code, Ruby programmers are more prefer to more dynamic version, like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Product</span>
+</span><span class='line'>  <span class="c1">#..</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Factory</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:product</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">produce</span>
+</span><span class='line'>    <span class="vi">@product</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">fac</span> <span class="o">=</span> <span class="no">Factory</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">fac</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="no">Product</span>
+</span><span class='line'><span class="n">fac</span><span class="o">.</span><span class="n">produce</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h4>Builder</h4>
+
+<p>Ruby&rsquo;s build method is more dynamic, like the code shown:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Director</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">build_with</span> <span class="n">builder</span>
+</span><span class='line'>  <span class="n">acc</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="o">[</span><span class="ss">:header</span><span class="p">,</span> <span class="ss">:body</span><span class="p">,</span> <span class="ss">:footer</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">m</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">acc</span> <span class="o">+=</span> <span class="n">builder</span><span class="o">.</span><span class="n">__send__</span> <span class="n">m</span> <span class="k">if</span> <span class="n">builder</span><span class="o">.</span><span class="n">respond_to?</span> <span class="n">m</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">acc</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">HTMLBuilder</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">header</span><span class="p">;</span> <span class="s1">&#39;&lt;html&gt;&lt;title&gt;html builder&lt;/title&gt;&#39;</span><span class="p">;</span><span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">body</span><span class="p">;</span>   <span class="s1">&#39;&lt;body&gt;html builder&lt;/body&gt;&#39;</span>        <span class="p">;</span><span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">footer</span><span class="p">;</span> <span class="s1">&#39;&lt;/html&gt;&#39;</span>                          <span class="p">;</span><span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">XMLBuilder</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">header</span><span class="p">;</span> <span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; charset=&quot;utf-8&quot;&gt;&#39;</span><span class="p">;</span><span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">body</span><span class="p">;</span>   <span class="s1">&#39;&lt;root&gt;xml builder&lt;/root&gt;&#39;</span>            <span class="p">;</span><span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">d</span> <span class="o">=</span> <span class="no">Director</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="nb">puts</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">build_with</span> <span class="no">HTMLBuilder</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
+</span><span class='line'><span class="nb">puts</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">build_with</span> <span class="no">XMLBuilder</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The fun part is that above code will check the method signature, if the object we want to build don&rsquo;t need specify part, we could leave the method unimplemented that&rsquo;s ok to Ruby.</p>
+
+<h4>Adapter</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Adaptee</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">talk</span><span class="p">;</span> <span class="nb">puts</span> <span class="s1">&#39;Adaptee&#39;</span><span class="p">;</span><span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Adapter</span> <span class="o">&lt;</span> <span class="no">Adaptee</span>
+</span><span class='line'>  <span class="k">alias</span> <span class="n">talkee</span> <span class="n">talk</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">talk</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s1">&#39;before Adaptee&#39;</span>
+</span><span class='line'>  <span class="n">talkee</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s1">&#39;after Adaptee&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="no">Adapter</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">talk</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Composite</h4>
+
+<p>I&rsquo;m totally agree with the point that the Composite pattern is built into Ruby with the include keyword. As you know, with composite pattern, there&rsquo;re two concepts: Whole and Parts. In Ruby, you can imagine the the whole is the Mixiner, while the part is the Mixinee.</p>
+
+<h4>Decorator</h4>
+
+<p>This is another demonstration of Ruby&rsquo;s power, it built with a lot of proved best practice. In Ruby, you can implement Decorator pattern by extending modules, like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Colorful</span>
+</span><span class='line'>  <span class="n">attr_acessor</span> <span class="ss">:color</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Widget</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">w</span> <span class="o">=</span> <span class="no">Widget</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">w</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span> <span class="c1">#NoMethod error</span>
+</span><span class='line'><span class="n">w</span><span class="o">.</span><span class="n">extend</span> <span class="no">Colorful</span>
+</span><span class='line'><span class="n">w</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">w</span><span class="o">.</span><span class="n">color</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Proxy</h4>
+
+<p>Just like adapter, you can implement Proxy pattern by delegating its interface to another instance. But keep in mind the difference of Proxy and Adapter, with Proxy, you should not change interface, you can use Proxy pattern for caching purpose or for security reasons, just keep interface the same to its subject; but with Adapter pattern, you can transform the interface of the inner object.</p>
+
+<h4>Command</h4>
+
+<p>In Ruby, you can implement Command pattern leverage code blocks:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Command</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>  <span class="vi">@executors</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">add_executor</span> <span class="o">&amp;</span><span class="n">block</span>
+</span><span class='line'>  <span class="vi">@executors</span> <span class="o">&lt;&lt;</span> <span class="n">block</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">execute</span>
+</span><span class='line'>  <span class="vi">@executors</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">.</span><span class="n">call</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">c</span> <span class="o">=</span> <span class="no">Command</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">add_executor</span><span class="p">{</span> <span class="nb">puts</span> <span class="s1">&#39;executor 1&#39;</span> <span class="p">}</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">add_executor</span><span class="p">{</span> <span class="nb">puts</span> <span class="s1">&#39;executor 2&#39;</span> <span class="p">}</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">execute</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Template method</h4>
+
+<p>Here is code snippet quoted from the book:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;webrick&#39;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">HelloServer</span> <span class="o">&lt;</span> <span class="ss">WEBrick</span><span class="p">:</span><span class="ss">:GenericServer</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">socket</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">socket</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Hello TCP/IP world&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;a simple HTTP server implementation, WEBrick library complete most of heavy lift, like listening on a port, accepting new connections, cleaning up when a connection is finished etc.. What we do is to provide HTTP response content, that&rsquo;s the beauty of Template method.</p>
+
+<h4>Singleton</h4>
+
+<p>In Ruby, Singleton is as simple as:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SingletonClass</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>  <span class="c1"># methods</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or you can leverage the built-in standard library:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;singleton&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">SingletonLogger</span> <span class="o">&lt;</span> <span class="no">SimpleLogger</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Singleton</span>
+</span><span class='line'>  <span class="c1"># Logger implementation details.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There&rsquo;re still some patterns that I didn&rsquo;t cover, but perhaps you have got the idea that Ruby has many design patterns built into it in the first place. As a saying that &ldquo;design patterns are usually a flaw in the language/framework&rdquo;, although I doubted that argue, apparently Ruby is not in that place.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby 2.1 New Features]]></title>

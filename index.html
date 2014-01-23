@@ -9,7 +9,7 @@
   <meta name="author" content="George Sun">
 
   
-  <meta name="description" content="Ruby 2.1 has been released several days before. It brought a number of optimisations as well as smaller and useful features. In this article, I will &hellip;">
+  <meta name="description" content="I just finished reading the great book Design Patterns in Ruby. Actually just like me, most of developers know Design Patterns well, what I want to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,6 +29,11 @@
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 
   
 
@@ -65,6 +70,84 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/23/ruby-design-patterns/">Ruby Design Patterns</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-23T13:27:14+08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I just finished reading the great book <a href="http://www.amazon.com/Design-Patterns-Ruby-Russ-Olsen/dp/0321490452">Design Patterns in Ruby</a>. Actually just like me, most of developers know Design Patterns well, what I want to learn from the book is Design Patterns in Ruby style, there is a saying: <em>Just because you have duck-typing doesn&rsquo;t mean you can ignore common OO idioms!</em></p>
+
+<p>In this blog post, I&rsquo;m going to show you how to implement common design patterns in Ruby, without further ado, let&rsquo;s go!</p>
+
+<h4>Factory</h4>
+
+<p>The classic implementation in the book <a href="http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1390451541&amp;sr=1-1&amp;keywords=design+patterns">Design Patterns: Elements of Reusable Object-Oriented Software</a> is inheriance-based, this kind of style is hard to find in Ruby code, Ruby programmers are more prefer to more dynamic version, like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Product</span>
+</span><span class='line'>  <span class="c1">#..</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Factory</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:product</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">produce</span>
+</span><span class='line'>    <span class="vi">@product</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">fac</span> <span class="o">=</span> <span class="no">Factory</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">fac</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="no">Product</span>
+</span><span class='line'><span class="n">fac</span><span class="o">.</span><span class="n">produce</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/01/23/ruby-design-patterns/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -149,6 +232,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/23/ruby-design-patterns/">Ruby Design Patterns</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/23/ruby-21-new-features/">Ruby 2.1 New Features</a>
