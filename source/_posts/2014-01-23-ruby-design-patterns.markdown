@@ -9,7 +9,7 @@ categories: Ruby
 
 I just finished reading the great book [Design Patterns in Ruby](http://www.amazon.com/Design-Patterns-Ruby-Russ-Olsen/dp/0321490452). Actually just like me, most of developers know Design Patterns well, what I want to learn from the book is Design Patterns in Ruby style, there is a saying: *Just because you have duck-typing doesn't mean you can ignore common OO idioms!*
 
-In this blog post, I'm going to show you how to implement common design patterns in Ruby, without further ado, let's go!
+In this blog post, I'm going to show you how to implement common design patterns in Ruby, without further ado, let's get started!
 
 #### Factory 
 The classic implementation in the book [Design Patterns: Elements of Reusable Object-Oriented Software](http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_1?s=books&ie=UTF8&qid=1390451541&sr=1-1&keywords=design+patterns) is inheriance-based, this kind of style is hard to find in Ruby code, Ruby programmers are more prefer to more dynamic version, like this:
