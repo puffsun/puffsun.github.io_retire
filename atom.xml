@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[George's dream port]]></title>
+  <link href="http://puffsun.github.io/atom.xml" rel="self"/>
+  <link href="http://puffsun.github.io/"/>
+  <updated>2014-01-23T11:36:56+08:00</updated>
+  <id>http://puffsun.github.io/</id>
+  <author>
+    <name><![CDATA[George Sun]]></name>
+    <email><![CDATA[sunwinner3@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby 2.1 New Features]]></title>
+    <link href="http://puffsun.github.io/blog/2014/01/23/ruby-21-new-features/"/>
+    <updated>2014-01-23T11:22:29+08:00</updated>
+    <id>http://puffsun.github.io/blog/2014/01/23/ruby-21-new-features</id>
+    <content type="html"><![CDATA[<p>Ruby 2.1 has been released several days before. It brought a number of optimisations as well as smaller and useful features. In this article, I will go through several very welcoming features, without further ado, let&rsquo;s move on to the world of Ruby 2.1.</p>
+
+<h3>Installing Ruby 2.1</h3>
+
+<p>If you&rsquo;re on rvm(run <code>rvm get head</code> to get 2.1.0):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rvm get head
+</span><span class='line'><span class="nv">$ </span>rvm install ruby-2.1.0
+</span><span class='line'><span class="nv">$ </span>rvm use ruby-2.1.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or if you like me, using <code>rbenv</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rbenv install 2.1.0
+</span><span class='line'><span class="nv">$ </span>rbenv rehash
+</span><span class='line'><span class="nv">$ </span>rbenv shell 2.1.0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To make sure you&rsquo;re using the newly installed Ruby, run:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ruby -v
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h3>New features that we&rsquo;ll talk about</h3>
+
+<p>For complete release notes, go ahead to <a href="https://github.com/ruby/ruby/blob/v2_1_0/NEWS">https://github.com/ruby/ruby/blob/v2_1_0/NEWS</a>. Below is the list of features we&rsquo;ll talk about.</p>
+
+<ol>
+<li>Required Keyword Arguments</li>
+<li>Rational and Complex Number Literals</li>
+<li>def-expr Now Return Value</li>
+<li>Array#to_h &amp; Enumerable#to_h</li>
+<li>Exception#cause</li>
+<li>Generational GC a.k.a RGenGC</li>
+<li>Refinements</li>
+<li>Object Allocation Tracing</li>
+<li>Scrubbing Strings</li>
+</ol>
+
+
+<hr />
+
+<h5>1. Required Keyword Arguments</h5>
+
+<p>In previous Ruby 2.0 release, it introduced keyword arguments:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="ss">a</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;a: </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Unfortunately, the keyword always require a default value, which you avoid in Ruby 2.1 by using required keyword arguments:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="ss">a</span><span class="p">:)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;a: </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>2. Rational and Complex Number Literals</h5>
+
+<p>Ruby 2.1 introduced the i <code>i</code> suffix to support Complex numbers, also the <code>r</code>suffix to support Rational numbers.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:015:0&gt; 10+3i + Complex<span class="o">(</span>5, 6i<span class="o">)</span>
+</span><span class='line'><span class="o">=</span>&gt; <span class="o">(</span>9+3i<span class="o">)</span>
+</span><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:014:0&gt; 10/3r
+</span><span class='line'><span class="o">=</span>&gt; <span class="o">(</span>10/3<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>3. def-expr Now Return Value</h5>
+
+<p>In previous versions of Ruby, the return value of a method definition has always been nil, now in version 2.1, the return value of def expression is the Symbol of the method name.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:016:0&gt; def foo
+</span><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:017:1&gt; <span class="nv">end</span>
+</span><span class='line'><span class="o">=</span>&gt; :foo
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The idea was to allow inlining of private/protected/public keywords and method definitions.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Foo</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">public_method</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span> <span class="k">def</span> <span class="nf">some_other_method</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span> <span class="k">def</span> <span class="nf">a_private_method</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>4. Array#to_h &amp; Enumerable#to_h</h5>
+
+<p>Previously if you want convert an Array object to Hash object, you should do:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:023:0&gt; <span class="nv">my_array</span> <span class="o">=</span> <span class="o">[[</span>:key1, <span class="s2">&quot;one&quot;</span><span class="o">]</span>, <span class="o">[</span>:key2, <span class="s2">&quot;two&quot;</span><span class="o">]</span>, <span class="o">[</span>:key3, <span class="s2">&quot;three&quot;</span><span class="o">]]</span>
+</span><span class='line'><span class="o">=</span>&gt; <span class="o">[[</span>:key1, <span class="s2">&quot;one&quot;</span><span class="o">]</span>, <span class="o">[</span>:key2, <span class="s2">&quot;two&quot;</span><span class="o">]</span>, <span class="o">[</span>:key3, <span class="s2">&quot;three&quot;</span><span class="o">]]</span>
+</span><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:024:0&gt; Hash<span class="o">[</span>*my_array.flatten<span class="o">]</span>
+</span><span class='line'><span class="o">=</span>&gt; <span class="o">{</span>:key1<span class="o">=</span>&gt;<span class="s2">&quot;one&quot;</span>, :key2<span class="o">=</span>&gt;<span class="s2">&quot;two&quot;</span>, :key3<span class="o">=</span>&gt;<span class="s2">&quot;three&quot;</span><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&rsquo;s a bit tedious, now with Ruby 2.1, you can do:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>my_array.to_h
+</span><span class='line'><span class="o">=</span>&gt; <span class="o">{</span>:key1<span class="o">=</span>&gt;<span class="s2">&quot;one&quot;</span>, :key2<span class="o">=</span>&gt;<span class="s2">&quot;two&quot;</span>, :key3<span class="o">=</span>&gt;<span class="s2">&quot;three&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&rsquo;s much more simple.</p>
+
+<h5>5. Exception#cause</h5>
+
+<p>Sometimes when rescuing an exception in Ruby, it’s useful to handle the error scenario by raising another, different exception. The trouble with this technique is that it throws away all the information held by the original exception. This makes debugging harder, as there’s no stack trace to follow back to the root cause of the failure.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="k">begin</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;Error A&quot;</span>
+</span><span class='line'>  <span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">error</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;Error B&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">error</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Current failure: </span><span class="si">#{</span><span class="n">error</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Original failure:  </span><span class="si">#{</span><span class="n">error</span><span class="o">.</span><span class="n">cause</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1"># &gt;&gt; Current failure: #&lt;RuntimeError: Error B&gt;</span>
+</span><span class='line'><span class="c1"># &gt;&gt; Original failure:  #&lt;RuntimeError: Error A&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For detailed explanation, go ahead to <a href="http://devblog.avdi.org/2013/12/25/exception-causes-in-ruby-2-1/">http://devblog.avdi.org/2013/12/25/exception-causes-in-ruby-2-1/</a>.</p>
+
+<h5>6. Generational GC a.k.a RGenGC</h5>
+
+<p>Now almost every programmer knows GC, thanks to Java. In more traditional programming languages, like C/C++, you must manually free resources when you finish using them, this make the program more error prone, also put a huge burden onto programmer.</p>
+
+<p>RGenGC is a new garbage collector known as a <a href="http://en.wikipedia.org/wiki/Garbage_collection_(computer_science)#Generational_GC_.28ephemeral_GC.29">generational garbage collector</a>, sometimes referred to as an ephemeral garbage collector. This design of garbage collector leverages the fact that most objects collected by the garbage collector were the objects most recently created. In other words, most objects being collected by the garbage collector were temporary objects, used for a short period in a single method and discarded. Generational garbage collectors collect these objects more effectively, putting less strain on the GC when it searches through the older objects to find unreferenced objects.</p>
+
+<p>Prior to Ruby 2.1, Ruby’s garbage collector was running a conservative stop-the-world mark and sweep algorithm. In Ruby 2.1, we are still using the mark and sweep algorithm to garbage collect the young/old generations. However, because we have lesser objects to mark the marking time decreases, which leads to improved collector performance.</p>
+
+<p>There are caveats, however. In order to preserve compatibility with C extensions, the Ruby core team could not implement a “full” generational garbage collection algorithm. In particular, they could not implement the <a href="http://en.wikipedia.org/wiki/Garbage_collection_(computer_science)#Moving_vs._non-moving">moving garbage collection algorithm</a> – hence the “restricted”.</p>
+
+<p>That said, it is very encouraging to see the Ruby core team taking garbage collection performance very seriously. For more details, do check out <a href="http://confreaks.com/videos/2866-rubyconf2013-object-management-on-ruby-2-1">this</a> excellent presentation by Koichi Sasada.</p>
+
+<h5>7. Refinements</h5>
+
+<p><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>Refinements are no longer experimental in Ruby 2.1. If you are new to refinements, it helps to compare it to monkey patching. In Ruby, all classes are open. This means that we can happily add methods to an existing class.</p>
+
+<p>To appreciate the havoc this can cause, let’s redefine String#count</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">String</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">count</span>
+</span><span class='line'>    <span class="nb">Float</span><span class="o">::</span><span class="no">INFINITY</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you were to paste the above into irb, every string returns Infinity when count-ed:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:001:0&gt; <span class="s2">&quot;I &lt;3 Monkey Patching&quot;</span>.count
+</span><span class='line'><span class="o">=</span>&gt; Infinity
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Refinements provide an alternate way to scope our modifications. Let’s make something slightly more useful:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Permalinker</span>
+</span><span class='line'>  <span class="n">refine</span> <span class="nb">String</span> <span class="k">do</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">permalinkify</span>
+</span><span class='line'>      <span class="n">downcase</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Post</span>
+</span><span class='line'>  <span class="n">using</span> <span class="no">Permalinker</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@title</span> <span class="o">=</span> <span class="n">title</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">permalink</span>
+</span><span class='line'>    <span class="vi">@title</span><span class="o">.</span><span class="n">permalinkify</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>First, we define a module, Permalinker that refines the String class with a new method. This method implements a cutting edge permalink algorithm.</p>
+
+<p>In order to use our refinement, we simply add using Permalinker into our example Post class. After that, we could treat as if the String class has the permalinkify method.</p>
+
+<p>Let’s see this in action:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:002:0&gt; <span class="nv">post</span> <span class="o">=</span> Post.new<span class="o">(</span><span class="s2">&quot;Refinements are pretty awesome&quot;</span><span class="o">)</span>
+</span><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:002:0&gt; post.permalink
+</span><span class='line'><span class="o">=</span>&gt; <span class="s2">&quot;refinements-are-pretty-awesome&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To prove that String#permalinkify only exists within the scope of the Post class, let’s try using that method elsewhere and watch the code blow up:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>irb<span class="o">(</span>main<span class="o">)</span>:023:0&gt; <span class="s2">&quot;Refinements are not globally scoped&quot;</span>.permalinkify
+</span><span class='line'>NoMethodError: undefined method <span class="sb">`</span>permalinkify<span class="s1">&#39; for &quot;Refinements are not globally scoped&quot;:String</span>
+</span><span class='line'><span class="s1">        from (irb):23</span>
+</span><span class='line'><span class="s1">        from /usr/local/var/rbenv/versions/2.1.0/bin/irb:11:in `&lt;main&gt;&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>8. Object Allocation Tracing</h5>
+
+<p>If you have a bloated Ruby application, it is usually a non-trivial task to pinpoint the exact source of the problem. MRI Ruby still doesn’t have profiling tools that can rival, for example, the <a href="https://github.com/jruby/jruby/wiki/Profiling-Object-Allocations">JRuby profiler</a>.</p>
+
+<p>Fortunately, work has begun to provide object allocation tracing to MRI Ruby.</p>
+
+<p>Here’s an example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;objspace&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Post</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@title</span> <span class="o">=</span> <span class="n">title</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">tags</span>
+</span><span class='line'>    <span class="sx">%w(ruby programming code)</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span><span class="o">.</span><span class="n">upcase</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">ObjectSpace</span><span class="o">.</span><span class="n">trace_object_allocations_start</span>
+</span><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">tags</span>
+</span><span class='line'><span class="no">ObjectSpace</span><span class="o">.</span><span class="n">trace_object_allocations_stop</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="no">ObjectSpace</span><span class="o">.</span><span class="n">allocation_sourcefile</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># post.rb</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">ObjectSpace</span><span class="o">.</span><span class="n">allocation_sourceline</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># 16</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">ObjectSpace</span><span class="o">.</span><span class="n">allocation_class_path</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># Class</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">ObjectSpace</span><span class="o">.</span><span class="n">allocation_method_id</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  <span class="c1"># new</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="no">ObjectSpace</span><span class="o">.</span><span class="n">allocation_sourcefile</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="c1"># post.rb</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">ObjectSpace</span><span class="o">.</span><span class="n">allocation_sourceline</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="c1"># 9</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">ObjectSpace</span><span class="o">.</span><span class="n">allocation_class_path</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="c1"># Array</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">ObjectSpace</span><span class="o">.</span><span class="n">allocation_method_id</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>  <span class="c1"># map</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Although knowing that we can obtain this information is great, it is not immediately obvious how this could be useful to you, the developer.</p>
+
+<p>Enter the allocation_stats gem written by Sam Rawlins.</p>
+
+<p>Let’s install it:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install allocation_stats
+</span><span class='line'>Fetching: allocation_stats-0.1.2.gem <span class="o">(</span>100%<span class="o">)</span>
+</span><span class='line'>Successfully installed allocation_stats-0.1.2
+</span><span class='line'>Parsing documentation <span class="k">for </span>allocation_stats-0.1.2
+</span><span class='line'>Installing ri documentation <span class="k">for </span>allocation_stats-0.1.2
+</span><span class='line'>Done installing documentation <span class="k">for </span>allocation_stats after 0 seconds
+</span><span class='line'>1 gem installed
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here’s the same example as before, except that we are using allocation_stats this time:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;allocation_stats&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Post</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@title</span> <span class="o">=</span> <span class="n">title</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">tags</span>
+</span><span class='line'>    <span class="sx">%w(ruby programming code)</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">tag</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">tag</span><span class="o">.</span><span class="n">upcase</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">stats</span> <span class="o">=</span> <span class="no">AllocationStats</span><span class="o">.</span><span class="n">trace</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">post</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">post</span><span class="o">.</span><span class="n">tags</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">stats</span><span class="o">.</span><span class="n">allocations</span><span class="p">(</span><span class="n">alias_paths</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span><span class="o">.</span><span class="n">to_text</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Running this produces a nicely formatted table:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sourcefile  sourceline  class_path  method_id  memsize  class
+</span><span class='line'>----------  ----------  ----------  ---------  -------  ------
+</span><span class='line'>post.rb             10  String      upcase           0  String
+</span><span class='line'>post.rb             10  String      upcase           0  String
+</span><span class='line'>post.rb             10  String      upcase           0  String
+</span><span class='line'>post.rb              9  Array       map              0  Array
+</span><span class='line'>post.rb              9  Post        tags             0  Array
+</span><span class='line'>post.rb              9  Post        tags             0  String
+</span><span class='line'>post.rb              9  Post        tags             0  String
+</span><span class='line'>post.rb              9  Post        tags             0  String
+</span><span class='line'>post.rb             17  Class       new              0  Post
+</span><span class='line'>post.rb             17                               0  String
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sam gave a wonderful presentation that looks into more details of the allocation_stats gem.
+(This section is quoted from <a href="http://www.sitepoint.com/look-ruby-2-1/">http://www.sitepoint.com/look-ruby-2-1/</a>)</p>
+
+<h5>9. Strings</h5>
+
+<p>String is important to every programming language, Ruby is no excuse, you cannot avoid them in almost every real world program. With the release of Ruby 2.1, there are a few of changes you can use to your advantage.</p>
+
+<p><strong>String Frozen</strong>
+In Ruby, every time you declare a string, a new object is created then the string data copied into it. In other word, if you have a string literal in you method, every time you call the method, a new string object will be created, it may lead to performance issue in real world application.</p>
+
+<p>Of course you can avoid this problem with Symbols because every Symbol instance in Ruby is single instance, you always refer to the same instance.</p>
+
+<p>Unfortunately Symbols are not sting, you cannot split it, index it or search through it. You have to convert the Symbol to a string before performing these actions. You can use symbols when referring to &ldquo;the thing called,&rdquo; but manipulating them in any way is out of the question. What&rsquo;s needed is something in between a symbol and a mutable string. This is what frozen strings are for.</p>
+
+<p>In the past, you were able to create frozen strings using &ldquo;some string&#8221;f. Notice the f suffix. This syntax has been removed (or deprecated), and the more standard &#8220;some string&rdquo;.freeze method syntax optimised. Frozen strings are created once, and are immutable just like symbols, but all of the traditional string methods (barring those that modify the string) are available. While frozen strings are not new, the optimisation of the .freeze method is new.</p>
+
+<p><strong>String Scrubbing</strong></p>
+
+<p><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>Scrubbing strings is important when working with multibyte encoded strings (which Ruby defaults to now). &ldquo;Scrubbing&rdquo; a string is removing invalid byte sequences from a string while keeping all valid byte sequences intact. This is important when sending strings downstream to &ldquo;dumber&rdquo; clients if these clients can conceivably display incorrect data as garbage.</p>
+
+<p>The String#scrub method scrubs all invalid character sequences from a string and returns the new string. It can be called with no arguments like &ldquo;string&rdquo;.scrub, which replaces all invalid sequences with an empty string (&ldquo;deleting&rdquo; them). You can also call it with a simple string replacement, such as &ldquo;abc\u3042\x81&rdquo;.scrub(&ldquo;X&rdquo;) which replaced the invalid sequence \x81 with X, producing the string &ldquo;abc\u3042X&rdquo;. You can also use a block, and the docs for the method give a very useful method for debugging: a block that replaces all invalid sequences with their hex equivalent so you can see the invalid sequences without delving into the Ruby debugger or IRB: &ldquo;abc\u3042\xE3\x80&rdquo;.scrub{|bytes| &lsquo;&lt;&rsquo;+bytes.unpack(&lsquo;H*&rsquo;)[0]+&lsquo;>&rsquo; }. This will produce the string &ldquo;abc\u3042&rdquo;.</p>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p>http://www.sitepoint.com/look-ruby-2-1/<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+<li id="fn:2">
+<p>http://ruby.about.com/od/Whats-New-in-Ruby-210/fl/Whats-new-in-Ruby-210-Strings.htm<a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>
