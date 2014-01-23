@@ -4,11 +4,11 @@
   <title><![CDATA[Category: Ruby | George's dream port]]></title>
   <link href="http://puffsun.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-01-23T19:10:27+08:00</updated>
+  <updated>2014-01-23T21:15:46+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
-    <email><![CDATA[sunwinner3@gmail.com]]></email>
+    
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
@@ -20,7 +20,7 @@
     <id>http://puffsun.github.io/blog/2014/01/23/ruby-design-patterns</id>
     <content type="html"><![CDATA[<p>I just finished reading the great book <a href="http://www.amazon.com/Design-Patterns-Ruby-Russ-Olsen/dp/0321490452">Design Patterns in Ruby</a>. Actually just like me, most of developers know Design Patterns well, what I want to learn from the book is Design Patterns in Ruby style, there is a saying: <em>Just because you have duck-typing doesn&rsquo;t mean you can ignore common OO idioms!</em></p>
 
-<p>In this blog post, I&rsquo;m going to show you how to implement common design patterns in Ruby, without further ado, let&rsquo;s go!</p>
+<p>In this blog post, I&rsquo;m going to show you how to implement common design patterns in Ruby, without further ado, let&rsquo;s get started!</p>
 
 <h4>Factory</h4>
 
