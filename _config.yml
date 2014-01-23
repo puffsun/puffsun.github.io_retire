@@ -63,7 +63,7 @@ default_asides: [custom/asides/gravatar.html, asides/recent_posts.html, asides/g
 # ----------------------- #
 
 # Github repositories
-github_user: puffsun
+github_user:
 github_repo_count: 1
 github_show_profile_link: true
 github_skip_forks: true
@@ -73,12 +73,12 @@ github_skip_forks: true
 weibo_uid: 1994207995
 weibo_verifier: adfb3d94&dpc
 weibo_fansline: 0   # how many followers to show
-weibo_show: false    # latest weibos
+weibo_show: false   # latest weibos
 weibo_pic: false    # weibo pictures
 weibo_skin: 10      # skins
 
 # Twitter
-twitter_user: kui_sun
+twitter_user:
 twitter_tweet_button: true
 
 # Google +1
