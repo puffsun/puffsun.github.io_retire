@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Bindings in Ruby - George's dream port</title>
+  <meta name="author" content="George Sun">
+
+  
+  <meta name="description" content="Binding overview In Ruby, bindings can be made available by calling binding method, which is a Kernel method that returns Binding object. Let&rsquo;s &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://puffsun.github.io/blog/2014/01/24/bindings-in-ruby">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="George's dream port" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">George's dream port</a></h1>
+  
+    <h2>Programming thoughts</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:puffsun.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Bindings in Ruby</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-24T14:43:40+08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>Binding overview</h3>
+
+<p>In Ruby, bindings can be made available by calling binding method, which is a Kernel method that returns Binding object. Let&rsquo;s see the <a href="http://www.ruby-doc.org/core-2.1.0/Binding.html">rdoc</a> of Binding object:</p>
+
+<blockquote><p>Objects of class Binding encapsulate the execution context at some particular place in the code and retain this context for future use. The variables, methods, value of self, and possibly an iterator block that can be accessed in this context are all retained. Binding objects can be created using Kernel#binding, and are made available to the callback of Kernel#set_trace_func. These binding objects can be passed as the second argument of the Kernel#eval method, establishing an environment for the evaluation.</p></blockquote>
+
+<!--more-->
+
+
+<p>Like rdoc said, with bindings, mostly you can do is pass it as a second parameter to Kernel#eval, Ruby will use the binding to resolve open variable references by evaluating a string, other than that, bindings are pretty opaque.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Demo</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@secret</span> <span class="o">=</span> <span class="n">n</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">get_binding</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">binding</span><span class="p">()</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">k1</span> <span class="o">=</span> <span class="no">Demo</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">99</span><span class="p">)</span>
+</span><span class='line'><span class="n">b1</span> <span class="o">=</span> <span class="n">k1</span><span class="o">.</span><span class="n">get_binding</span>
+</span><span class='line'><span class="n">k2</span> <span class="o">=</span> <span class="no">Demo</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'><span class="n">b2</span> <span class="o">=</span> <span class="n">k2</span><span class="o">.</span><span class="n">get_binding</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;@secret&quot;</span><span class="p">,</span> <span class="n">b1</span><span class="p">)</span>   <span class="c1">#=&gt; 99</span>
+</span><span class='line'><span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;@secret&quot;</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span>   <span class="c1">#=&gt; -3</span>
+</span><span class='line'><span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;@secret&quot;</span><span class="p">)</span>       <span class="c1">#=&gt; nil</span>
+</span><span class='line'><span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;a = 101&quot;</span><span class="p">,</span> <span class="n">b1</span><span class="p">)</span>   <span class="c1">#Bind &#39;a&#39; to 101</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Binding in practise</h3>
+
+<h4>Local Scope Bindings</h4>
+
+<p>With Binding object along with Kernel#binding method, we can capture the variable bindings available at a particular point in the execution context, then pass the binding to another place for further reference, let&rsquo;s see an example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">value_of</span><span class="p">(</span><span class="n">bind</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">eval</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">bind</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">my_scope</span>
+</span><span class='line'>    <span class="n">b</span> <span class="o">=</span> <span class="mi">123</span>
+</span><span class='line'>    <span class="n">value_of</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">my_scope</span>               <span class="c1"># =&gt; 33</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bindings can be returned from a function as well. This example shows that a binding continues to exist after the function that defines the binding has exited<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">func</span>
+</span><span class='line'>  <span class="n">a</span> <span class="o">=</span> <span class="mi">22</span>
+</span><span class='line'>  <span class="n">b</span> <span class="o">=</span> <span class="mi">33</span>
+</span><span class='line'>  <span class="nb">binding</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">func_vars</span> <span class="o">=</span> <span class="n">func</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">eval</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">func_vars</span>         <span class="c1"># =&gt; 22</span>
+</span><span class='line'><span class="nb">eval</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">func_vars</span>         <span class="c1"># =&gt; 33</span>
+</span><span class='line'><span class="nb">eval</span> <span class="s2">&quot;a = 101&quot;</span><span class="p">,</span> <span class="n">func_vars</span>
+</span><span class='line'><span class="nb">eval</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">func_vars</span>         <span class="c1"># =&gt; 101</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The bizarre feature of this example shows that not only does binding persist beyond the scope of the function that created them, but that you can modify these bindings just by evaluating an assignment within their context.</p>
+
+<h4>Blocks and Bindings</h4>
+
+<p>A block in Ruby is a chunk of code that can be called like a function. The block automatically carries with it the bindings from the code location where it was created. For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">a</span> <span class="o">=</span> <span class="mi">33</span>
+</span><span class='line'>  <span class="n">block</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">a</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">redefine_a</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">a</span> <span class="o">=</span> <span class="mi">44</span>
+</span><span class='line'>    <span class="n">b</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">redefine_a</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>      <span class="c1"># =&gt; 33</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The block returns the value of a in the binding where the block was defined (a == 33), not the binding where the block was called (a == 44).</p>
+
+<p>This combination of code block and binding is called a closure, and is a very powerful tool in a Ruby programmers toolbox.</p>
+
+<h4><a href="http://en.wikipedia.org/wiki/ERuby">ERuby</a> and Bindings</h4>
+
+<p>ERuby stands for Embened Ruby, it&rsquo;s a templating system that used to embed Ruby code into text document. One of it&rsquo;s implementation in Ruby is called erb. With erb, you can write your template like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&lt;html&gt;&lt;body&gt;&lt;%= @title %&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Later, you can evaluate the template with Ruby code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@title</span> <span class="o">=</span> <span class="s2">&quot;The web and all that jazz&quot;</span>
+</span><span class='line'><span class="n">erb</span> <span class="o">=</span> <span class="no">ERB</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+</span><span class='line'><span class="n">html</span> <span class="o">=</span> <span class="n">erb</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note the binding call in the last line of code snippet, it pass in current execution context, which contains the @title variable definition. If we call erg like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">html</span> <span class="o">=</span> <span class="n">erb</span><span class="o">.</span><span class="n">result</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ruby will assumes that the binding as TOPLEVEL_BINDING, which is not what we want obviously.</p>
+
+<h4>Bindings for everyday use</h4>
+
+<p>Here I&rsquo;ll show you how to use binding to do quick debugging, first of all, we open the Array class, add a debug method<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Array</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">debug</span> <span class="nb">binding</span>
+</span><span class='line'>    <span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;arg = </span><span class="si">#{</span><span class="nb">eval</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">binding</span><span class="p">)</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can use this method to inspect a list of snippets of Ruby code to see what each snippet returns:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;current_resource&#39;</span><span class="p">,</span> <span class="s1">&#39;user.owns?(current_resource)&#39;</span><span class="o">].</span><span class="n">debug</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Keep mind that each element in the array will be evaluated as Ruby code, then return the execution result of the code snippet. In this example, the current execution context was captured by calling Kernel#binding method, then these code snippet was execution in the context that binding method captured.</p>
+
+<h3>Conclusion</h3>
+
+<p>Being able to pass around binding lead to very powerful Ruby code under certain circumstances. Someone would say that passing around execution context could violate encapsulation, but in my opinion, it&rsquo;s ok to break some rules once a while, at least Ruby give the power of breaking rule to you, a programmer. Not even to say one of most powerful features in Ruby that comes along with Binding: Closure.</p>
+
+<p>Resources:
+<a href="http://webjazz.blogspot.com/2006/07/introduction-to-bindings-in-ruby.html">Introduction to Bindings in Ruby</a></p>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="http://onestepback.org/index.cgi/Tech/Ruby/RubyBindings.rdoc">Variable Bindings in Ruby</a><a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+<li id="fn:2">
+<p>http://stackoverflow.com/questions/1605774/real-world-use-of-binding-objects-in-ruby<a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">George Sun</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-24T14:43:40+08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://puffsun.github.io/blog/2014/01/24/bindings-in-ruby/" data-via="" data-counturl="http://puffsun.github.io/blog/2014/01/24/bindings-in-ruby/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/01/23/ruby-design-patterns/" title="Previous Post: ruby design patterns">&laquo; ruby design patterns</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/1dc196afc203edd9f2633ec0b3fdcaa9?s=200" alt="Gravatar of George Sun " title="Gravatar of George Sun" />
+	</span>
+  <span>Software developer @ SAP Shanghai, China</span>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/24/bindings-in-ruby/">Bindings in Ruby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/23/ruby-design-patterns/">Ruby Design Patterns</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/23/ruby-21-new-features/">Ruby 2.1 New Features</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/103092209824087504629?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=0&speed=0&skin=&isTitle=0&noborder=1&isWeibo=0&isFans=&uid=1994207995&verifier=adfb3d94&dpc">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - George Sun -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -9,7 +9,7 @@
   <meta name="author" content="George Sun">
 
   
-  <meta name="description" content="I just finished reading the great book Design Patterns in Ruby. Actually just like me, most of developers know Design Patterns well, what I want to &hellip;">
+  <meta name="description" content="Binding overview In Ruby, bindings can be made available by calling binding method, which is a Kernel method that returns Binding object. Let&rsquo;s &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/24/bindings-in-ruby/">Bindings in Ruby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-24T14:43:40+08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Binding overview</h3>
+
+<p>In Ruby, bindings can be made available by calling binding method, which is a Kernel method that returns Binding object. Let&rsquo;s see the <a href="http://www.ruby-doc.org/core-2.1.0/Binding.html">rdoc</a> of Binding object:</p>
+
+<blockquote><p>Objects of class Binding encapsulate the execution context at some particular place in the code and retain this context for future use. The variables, methods, value of self, and possibly an iterator block that can be accessed in this context are all retained. Binding objects can be created using Kernel#binding, and are made available to the callback of Kernel#set_trace_func. These binding objects can be passed as the second argument of the Kernel#eval method, establishing an environment for the evaluation.</p></blockquote>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/01/24/bindings-in-ruby/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -235,6 +280,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/24/bindings-in-ruby/">Bindings in Ruby</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/23/ruby-design-patterns/">Ruby Design Patterns</a>
