@@ -9,7 +9,7 @@
   <meta name="author" content="George Sun">
 
   
-  <meta name="description" content="Binding overview In Ruby, bindings can be made available by calling binding method, which is a Kernel method that returns Binding object. Let&rsquo;s &hellip;">
+  <meta name="description" content="Write multi-threaded program is pretty straightforward in Ruby, there&rsquo;s a Thread class that help to achieve parallelism code. If you didn&rsquo &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/25/threading-with-monitor-in-ruby/">Threading With Monitor in Ruby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-25T00:45:07+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Write multi-threaded program is pretty straightforward in Ruby, there&rsquo;s a Thread class that help to achieve parallelism code. If you didn&rsquo;t know thread or don&rsquo;t know how to write multi-threaded code in Ruby, I encourage you stop reading this blog post, move to this brilliant tutorial in <a href="http://www.tutorialspoint.com/ruby/ruby_multithreading.htm">Ruby Multithreading</a> to learn the basics of the Thread in Ruby.</p>
+
+<p>Well, this blog post will show you how to make your life easy as a Ruby developer when you faced with multi-threading &mdash; the MonitorMixin library, it&rsquo;s one of my favourite libraries. It make the task of writing complex synchronisation logic easy which is hard to write using a simple exclusive locking mechanism. MonitorMixin lets you write a nested lock, so you can use it as a more convenient version of plain old Mutex.</p>
+
+<p>Let&rsquo;s see an example with deadlock, then we resolve it with MonitorMixin library.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/01/25/threading-with-monitor-in-ruby/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -280,6 +325,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/25/threading-with-monitor-in-ruby/">Threading With Monitor in Ruby</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/24/bindings-in-ruby/">Bindings in Ruby</a>

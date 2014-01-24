@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | George's dream port]]></title>
   <link href="http://puffsun.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-01-24T14:53:36+08:00</updated>
+  <updated>2014-01-25T00:50:57+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -12,6 +12,197 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Threading With Monitor in Ruby]]></title>
+    <link href="http://puffsun.github.io/blog/2014/01/25/threading-with-monitor-in-ruby/"/>
+    <updated>2014-01-25T00:45:07+08:00</updated>
+    <id>http://puffsun.github.io/blog/2014/01/25/threading-with-monitor-in-ruby</id>
+    <content type="html"><![CDATA[<p>Write multi-threaded program is pretty straightforward in Ruby, there&rsquo;s a Thread class that help to achieve parallelism code. If you didn&rsquo;t know thread or don&rsquo;t know how to write multi-threaded code in Ruby, I encourage you stop reading this blog post, move to this brilliant tutorial in <a href="http://www.tutorialspoint.com/ruby/ruby_multithreading.htm">Ruby Multithreading</a> to learn the basics of the Thread in Ruby.</p>
+
+<p>Well, this blog post will show you how to make your life easy as a Ruby developer when you faced with multi-threading &mdash; the MonitorMixin library, it&rsquo;s one of my favourite libraries. It make the task of writing complex synchronisation logic easy which is hard to write using a simple exclusive locking mechanism. MonitorMixin lets you write a nested lock, so you can use it as a more convenient version of plain old Mutex.</p>
+
+<p>Let&rsquo;s see an example with deadlock, then we resolve it with MonitorMixin library.</p>
+
+<!--more-->
+
+
+<p>Here&rsquo;s the defected code:
+```ruby
+require &lsquo;thread&rsquo;</p>
+
+<p>class Todo
+  def initialize</p>
+
+<pre><code>@items = {}
+@serial = 0
+# Exclusive mutex instance
+@mutex = Mutex.new
+</code></pre>
+
+<p>  end</p>
+
+<p>  def <a href="key"></a></p>
+
+<pre><code># No need to synchronize here because we only read value here
+# But keep in mind that in Ruby you can redefine method,
+# so this method may not behave as it should be.
+@items[key]
+</code></pre>
+
+<p>  end</p>
+
+<p>  def add(str)</p>
+
+<pre><code>@mutex.synchronize do
+  # Deadlock happens here.
+  key = serial
+  @items[@key] = str
+  return key
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  def delete(key)</p>
+
+<pre><code>@mutex.synchronize do
+  @items.delete(key)
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  def print_todos</p>
+
+<pre><code>@mutex.synchronize do
+  @items.keys.sort.collect { |item| [item, @items[item]] }
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  private</p>
+
+<p>  # Generate next serial number
+  def serial</p>
+
+<pre><code>@mutex.synchronize do
+  @serial += 1
+  return @serial
+end
+</code></pre>
+
+<p>  end
+end
+```
+Let&rsquo;s try it in interactive Ruby, note that I use <a href="http://pryrepl.org/">Pry</a> as replacement of plain old irb, you should give it a try too, it&rsquo;s pretty powerful.</p>
+
+<p><code>ruby
+[30] pry(main)&gt; require_relative 'deadlock_example'
+=&gt; true
+[31] pry(main)&gt; todo = Todo.new
+=&gt; #&lt;Todo:0x007f866977fb90 @items={}, @mutex=#&lt;Mutex:0x007f866977fb40&gt;, @serial=0&gt;
+[32] pry(main)&gt; todo.add('Item 1')
+ThreadError: deadlock; recursive locking
+from /Users/gsun/prog/ruby/george/deadlock_example.rb:39:in `synchronize'
+[33] pry(main)&gt;
+</code>
+Sure enough, we have a deadlock on our hands. These types of bugs can be difficult to track down in real life programming.</p>
+
+<p>Now let&rsquo;s see how to use MonitorMixin to enable nested lock, above example was refactored like this:
+```ruby
+require &lsquo;monitor&rsquo;</p>
+
+<p>class Todo
+  include MonitorMixin</p>
+
+<p>  def initialize</p>
+
+<pre><code># Remember to call super in constructor to initialize MonitorMixin
+# Also no need the @mutex instance at all
+super
+@items = {}
+@serial = 0
+</code></pre>
+
+<p>  end</p>
+
+<p>  def <a href="key"></a></p>
+
+<pre><code># No need to synchronize here because we only read value here
+# But keep in mind that in Ruby you can redefine method,
+# so this method may not behavior as it should be.
+@items[key]
+</code></pre>
+
+<p>  end</p>
+
+<p>  def add(str)</p>
+
+<pre><code>synchronize do
+  # Deadlock happens here.
+  key = serial
+  @items[@key] = str
+  return key
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  def delete(key)</p>
+
+<pre><code>synchronize do
+  @items.delete(key)
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  def print_todos</p>
+
+<pre><code>synchronize do
+  @items.keys.sort.collect { |item| [item, @items[item]] }
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  private</p>
+
+<p>  # Generate next serial number
+  def serial</p>
+
+<pre><code>synchronize do
+  @serial += 1
+  return @serial
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>Now let&rsquo;s try it in Pry:
+<code>ruby
+[1] pry(main)&gt; require_relative 'example'
+=&gt; true
+[2] pry(main)&gt; todo = Todo.new
+=&gt; #&lt;Todo:0x007ff1f2a30a98
+ @items={},
+ @mon_count=0,
+ @mon_mutex=#&lt;Mutex:0x007ff1f2a30a48&gt;,
+ @mon_owner=nil,
+ @serial=0&gt;
+[3] pry(main)&gt; todo.add('Item 1')
+=&gt; 1
+[4] pry(main)&gt;
+</code>
+The deadlock is gone since the synchronize method can handle nested locks, you don&rsquo;t have to worry about having a deadlock, unlike the Mutex version. If you know Java, you can see the synchronize method is similar to the synchronized keyword in Java.</p>
+
+<p>The moral is that we should consider MonitorMixin library for every cases that need synchronize, even the simplest one.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bindings in Ruby]]></title>

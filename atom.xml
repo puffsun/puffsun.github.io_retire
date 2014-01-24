@@ -4,7 +4,7 @@
   <title><![CDATA[George's dream port]]></title>
   <link href="http://puffsun.github.io/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-01-24T14:53:36+08:00</updated>
+  <updated>2014-01-25T00:50:57+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -12,6 +12,286 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Threading With Monitor in Ruby]]></title>
+    <link href="http://puffsun.github.io/blog/2014/01/25/threading-with-monitor-in-ruby/"/>
+    <updated>2014-01-25T00:45:07+08:00</updated>
+    <id>http://puffsun.github.io/blog/2014/01/25/threading-with-monitor-in-ruby</id>
+    <content type="html"><![CDATA[<p>Write multi-threaded program is pretty straightforward in Ruby, there&rsquo;s a Thread class that help to achieve parallelism code. If you didn&rsquo;t know thread or don&rsquo;t know how to write multi-threaded code in Ruby, I encourage you stop reading this blog post, move to this brilliant tutorial in <a href="http://www.tutorialspoint.com/ruby/ruby_multithreading.htm">Ruby Multithreading</a> to learn the basics of the Thread in Ruby.</p>
+
+<p>Well, this blog post will show you how to make your life easy as a Ruby developer when you faced with multi-threading &mdash; the MonitorMixin library, it&rsquo;s one of my favourite libraries. It make the task of writing complex synchronisation logic easy which is hard to write using a simple exclusive locking mechanism. MonitorMixin lets you write a nested lock, so you can use it as a more convenient version of plain old Mutex.</p>
+
+<p>Let&rsquo;s see an example with deadlock, then we resolve it with MonitorMixin library.</p>
+
+<!--more-->
+
+
+<p>Here&rsquo;s the defected code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;thread&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Todo</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="vi">@items</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="vi">@serial</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="c1"># Exclusive mutex instance</span>
+</span><span class='line'>    <span class="vi">@mutex</span> <span class="o">=</span> <span class="no">Mutex</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">[]</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># No need to synchronize here because we only read value here</span>
+</span><span class='line'>    <span class="c1"># But keep in mind that in Ruby you can redefine method,</span>
+</span><span class='line'>    <span class="c1"># so this method may not behave as it should be.</span>
+</span><span class='line'>    <span class="vi">@items</span><span class="o">[</span><span class="n">key</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@mutex</span><span class="o">.</span><span class="n">synchronize</span> <span class="k">do</span>
+</span><span class='line'>      <span class="c1"># Deadlock happens here.</span>
+</span><span class='line'>      <span class="n">key</span> <span class="o">=</span> <span class="n">serial</span>
+</span><span class='line'>      <span class="vi">@items</span><span class="o">[</span><span class="vi">@key</span><span class="o">]</span> <span class="o">=</span> <span class="n">str</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">key</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@mutex</span><span class="o">.</span><span class="n">synchronize</span> <span class="k">do</span>
+</span><span class='line'>      <span class="vi">@items</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">print_todos</span>
+</span><span class='line'>    <span class="vi">@mutex</span><span class="o">.</span><span class="n">synchronize</span> <span class="k">do</span>
+</span><span class='line'>      <span class="vi">@items</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="o">[</span><span class="n">item</span><span class="p">,</span> <span class="vi">@items</span><span class="o">[</span><span class="n">item</span><span class="o">]]</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Generate next serial number</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">serial</span>
+</span><span class='line'>    <span class="vi">@mutex</span><span class="o">.</span><span class="n">synchronize</span> <span class="k">do</span>
+</span><span class='line'>      <span class="vi">@serial</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="k">return</span> <span class="vi">@serial</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&rsquo;s try it in interactive Ruby, note that I use <a href="http://pryrepl.org/">Pry</a> as replacement of plain old irb, you should give it a try too, it&rsquo;s pretty powerful.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">30</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">require_relative</span> <span class="s1">&#39;deadlock_example&#39;</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'><span class="o">[</span><span class="mi">31</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">todo</span> <span class="o">=</span> <span class="no">Todo</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;Todo:0x007f866977fb90 @items={}, @mutex=#&lt;Mutex:0x007f866977fb40&gt;, @serial=0&gt;</span>
+</span><span class='line'><span class="o">[</span><span class="mi">32</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">todo</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;Item 1&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="ss">ThreadError</span><span class="p">:</span> <span class="n">deadlock</span><span class="p">;</span> <span class="n">recursive</span> <span class="n">locking</span>
+</span><span class='line'><span class="n">from</span> <span class="sr">/Users/</span><span class="n">gsun</span><span class="o">/</span><span class="n">prog</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">george</span><span class="o">/</span><span class="n">deadlock_example</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">39</span><span class="ss">:in</span> <span class="sb">`synchronize&#39;</span>
+</span><span class='line'><span class="sb">[33] pry(main)&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sure enough, we have a deadlock on our hands. These types of bugs can be difficult to track down in real life programming.</p>
+
+<p>Now let&rsquo;s see how to use MonitorMixin to enable nested lock, above example was refactored like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;monitor&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Todo</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">MonitorMixin</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="c1"># Remember to call super in constructor to initialize MonitorMixin</span>
+</span><span class='line'>    <span class="c1"># Also no need the @mutex instance at all</span>
+</span><span class='line'>    <span class="k">super</span>
+</span><span class='line'>    <span class="vi">@items</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="vi">@serial</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">[]</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># No need to synchronize here because we only read value here</span>
+</span><span class='line'>    <span class="c1"># But keep in mind that in Ruby you can redefine method,</span>
+</span><span class='line'>    <span class="c1"># so this method may not behavior as it should be.</span>
+</span><span class='line'>    <span class="vi">@items</span><span class="o">[</span><span class="n">key</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">synchronize</span> <span class="k">do</span>
+</span><span class='line'>      <span class="c1"># Deadlock happens here.</span>
+</span><span class='line'>      <span class="n">key</span> <span class="o">=</span> <span class="n">serial</span>
+</span><span class='line'>      <span class="vi">@items</span><span class="o">[</span><span class="vi">@key</span><span class="o">]</span> <span class="o">=</span> <span class="n">str</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">key</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">synchronize</span> <span class="k">do</span>
+</span><span class='line'>      <span class="vi">@items</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">print_todos</span>
+</span><span class='line'>    <span class="n">synchronize</span> <span class="k">do</span>
+</span><span class='line'>      <span class="vi">@items</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="o">[</span><span class="n">item</span><span class="p">,</span> <span class="vi">@items</span><span class="o">[</span><span class="n">item</span><span class="o">]]</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Generate next serial number</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">serial</span>
+</span><span class='line'>    <span class="n">synchronize</span> <span class="k">do</span>
+</span><span class='line'>      <span class="vi">@serial</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="k">return</span> <span class="vi">@serial</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now let&rsquo;s try it in Pry:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">require_relative</span> <span class="s1">&#39;example&#39;</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">todo</span> <span class="o">=</span> <span class="no">Todo</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;Todo:0x007ff1f2a30a98</span>
+</span><span class='line'> <span class="vi">@items</span><span class="o">=</span><span class="p">{},</span>
+</span><span class='line'> <span class="vi">@mon_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span class='line'> <span class="vi">@mon_mutex</span><span class="o">=</span><span class="c1">#&lt;Mutex:0x007ff1f2a30a48&gt;,</span>
+</span><span class='line'> <span class="vi">@mon_owner</span><span class="o">=</span><span class="kp">nil</span><span class="p">,</span>
+</span><span class='line'> <span class="vi">@serial</span><span class="o">=</span><span class="mi">0</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">todo</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;Item 1&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">1</span>
+</span><span class='line'><span class="o">[</span><span class="mi">4</span><span class="o">]</span> <span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The deadlock is gone since the synchronize method can handle nested locks, you don&rsquo;t have to worry about having a deadlock, unlike the Mutex version. If you know Java, you can see the synchronize method is similar to the synchronized keyword in Java.</p>
+
+<p>The moral is that we should consider MonitorMixin library for every cases that need synchronize, even the simplest one.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bindings in Ruby]]></title>
