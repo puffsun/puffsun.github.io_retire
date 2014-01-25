@@ -6,9 +6,9 @@ comments: true
 categories: Ruby
 ---
 
-Write multi-threaded program is pretty straightforward in Ruby, there's a Thread class that help to achieve parallelism code. If you didn't know thread or don't know how to write multi-threaded code in Ruby, I encourage you stop reading this blog post, move to this brilliant tutorial in [Ruby Multithreading](http://www.tutorialspoint.com/ruby/ruby_multithreading.htm) to learn the basics of the Thread in Ruby.
+Write multi-threaded program is pretty straightforward in Ruby, there's a Thread class that help to achieve parallelism code. If you didn't know thread or don't know how to write multi-threaded code in Ruby, I encourage you stop reading this blog post, move to this brilliant tutorial [Ruby Multithreading](http://www.tutorialspoint.com/ruby/ruby_multithreading.htm) to learn the basics of the Thread in Ruby.
 
-Well, this blog post will show you how to make your life easy as a Ruby developer when you faced with multi-threading -- the MonitorMixin library, it's one of my favourite libraries. It make the task of writing complex synchronisation logic easy which is hard to write using a simple exclusive locking mechanism. MonitorMixin lets you write a nested lock, so you can use it as a more convenient version of plain old Mutex. 
+Well, this blog post will show you how to make your life easier as a Ruby developer when you faced with multi-threading -- the MonitorMixin library, it's one of my favourite libraries. It make the task of writing complex synchronisation logic easy which is hard to write using a simple exclusive locking mechanism. MonitorMixin lets you write a nested lock, so you can use it as a more convenient version of plain old Mutex.
 
 Let's see an example with deadlock, then we resolve it with MonitorMixin library.
 <!--more-->
@@ -150,5 +150,5 @@ Now let's try it in Pry:
 ```
 The deadlock is gone since the synchronize method can handle nested locks, you don't have to worry about having a deadlock, unlike the Mutex version. If you know Java, you can see the synchronize method is similar to the synchronized keyword in Java. 
 
-The moral is that we should consider MonitorMixin library for every cases that need synchronize, even the simplest one.
+The moral is that we should consider MonitorMixin library for every case that need synchronize, even the simplest one.
 
