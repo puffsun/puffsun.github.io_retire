@@ -3,7 +3,10 @@ layout: post
 title: "Ruby 2.1 new features"
 date: 2014-01-23 11:22:29 +0800
 comments: true
-categories: Ruby
+categories: ["Ruby"]
+
+keywords: "Ruby 2.1, new features, Refinements, Rational and Complex Number literals, Required keywords, GC"
+description: "What's new in Ruby 2.1"
 ---
 
 

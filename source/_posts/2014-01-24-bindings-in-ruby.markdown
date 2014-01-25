@@ -3,7 +3,10 @@ layout: post
 title: "Bindings In Ruby"
 date: 2014-01-24 14:43:40 +0800
 comments: true
-categories: Ruby
+categories: ["Ruby"]
+
+keywords: "Ruby, Binding, Blocks, eRuby, erb, template, debugging"
+description: "How to use Binding object and Kernel#binding in Ruby"
 ---
 
 ### Binding overview

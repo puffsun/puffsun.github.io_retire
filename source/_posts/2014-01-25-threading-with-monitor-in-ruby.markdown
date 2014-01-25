@@ -3,7 +3,10 @@ layout: post
 title: "Threading with Monitor in Ruby"
 date: 2014-01-25 00:45:07 +0800
 comments: true
-categories: Ruby
+categories: ["Ruby"]
+
+keywords: "Todo, Thread, Ruby, Deadlock, Monitor, Monitormixin, sychronize"
+description: "How to write multi-threaded code leverage MonitorMixin in Ruby"
 ---
 
 Write multi-threaded program is pretty straightforward in Ruby, there's a Thread class that help to achieve parallelism code. If you didn't know thread or don't know how to write multi-threaded code in Ruby, I encourage you stop reading this blog post, move to this brilliant tutorial [Ruby Multithreading](http://www.tutorialspoint.com/ruby/ruby_multithreading.htm) to learn the basics of the Thread in Ruby.

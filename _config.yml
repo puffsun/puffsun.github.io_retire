@@ -7,7 +7,8 @@ title: George's dream port
 subtitle: Programming thoughts
 author: George Sun
 simple_search: http://google.com/search
-description: Programming blog, notes
+description: Programming blog, notes, Tech blog, Ruby, Java
+keywords: "Ruby, Java, Tech blog, Programming"
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -99,7 +100,7 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
+disqus_short_name: puffsun
 disqus_show_comment_count: false
 
 # Google Analytics
