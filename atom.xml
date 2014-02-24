@@ -4,7 +4,7 @@
   <title><![CDATA[George's dream port]]></title>
   <link href="http://puffsun.github.io/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-01-25T20:35:24+08:00</updated>
+  <updated>2014-02-24T20:53:15+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -12,6 +12,144 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Solutions of Scala for the Impatient - Chapter1 and Chapter2]]></title>
+    <link href="http://puffsun.github.io/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2/"/>
+    <updated>2014-02-24T20:09:58+08:00</updated>
+    <id>http://puffsun.github.io/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2</id>
+    <content type="html"><![CDATA[<p>Recently I&rsquo;m reading the book <a href="http://www.amazon.com/Scala-Impatient-Cay-S-Horstmann/dp/0321774094">Scala for the Impatient</a>, the book is pretty brilliant, you can see that from the comments. Since I&rsquo;m a newbie to Scala, I&rsquo;m try to complete the exercises after every chapter, I post the solutions in a serious of blog posts as book notes.</p>
+
+<p>Since both chapter 1 and chapter 2 are very simple, I&rsquo;ll post the solutions together here with this blog post.</p>
+
+<!--more-->
+
+
+<h3>Solutions of Chapter 1</h3>
+
+<p>8. One way to create random file or directory names is to produce a random BigInt and convert it to base 36, yielding a string such as &ldquo;qsnvbevtomcj38o06kul&rdquo;. Poke around Scaladoc to find a way of doing this in Scala.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">tmp</span> <span class="k">=</span> <span class="nc">BigInt</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="n">util</span><span class="o">.</span><span class="nc">Random</span><span class="o">).</span><span class="n">toString</span><span class="o">(</span><span class="mi">36</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>According to <a href="http://www.scala-lang.org/api/2.10.2/index.html#scala.math.BigInt$">BigInt&rsquo;s document</a>, there&rsquo;s a method called apply, which will construct a randomly generated BigInt, uniformly distributed over the range 0 to (2 ^ numBits &ndash; 1), its method signature is <code> def apply(numbits: Int, rnd: Random): BigInt </code>.</p>
+
+<p>9. How do you get the first character of a string in Scala? The last character?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">str</span> <span class="k">=</span> <span class="s">&quot;abcd&quot;</span>
+</span><span class='line'><span class="n">str</span><span class="o">.</span><span class="n">head</span> <span class="c1">// get the first</span>
+</span><span class='line'><span class="n">str</span><span class="o">.</span><span class="n">dropRight</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There&rsquo;re several way to achieve this goal, what I have shown is one of them.</p>
+
+<p>10. What do the take, drop, takeRight, and dropRight string functions do? What advantage or disadvantage do they have over using substring?
+To get an idea what they can do, we need to check Scala document.</p>
+
+<p>The difference between then and java.lang.String is that, before Java 7, String#substring method will operate on the original string, it will generate new String instance at all, so it takes constant time to complete the substring operation. But this behaviour changed after Java 7 due to security reasons, for more details, please go to <a href="http://www.javaadvent.com/2012/12/changes-to-stringsubstring-in-java-7.html">Changes to String.substring in Java 7</a>. After this change, substring will always produce new String instances, which will take linear time to complete the operation.</p>
+
+<p>As far as I know, in Scala, the take* and drop* method will always generate new String instances(please correct me if I&rsquo;m wrong), I think this is the difference.</p>
+
+<h3>Solutions of Chapter 2</h3>
+
+<p>1. The signum of a number is 1 if the number is positive, –1 if it is negative, and 0 if it is zero. Write a function that computes this value.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">signum</span><span class="o">(</span><span class="n">num</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span> <span class="k">if</span> <span class="o">(</span><span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">num</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice that I didn&rsquo;t use return statement in above code, it a best practice to avoid the return statement in Scala.</p>
+
+<p>2. What is the value of an empty block expression {}? What is its type?
+It&rsquo;s of type Unit, you can verify that with <code> {}.getClass </code> inside Scala interactive shell.</p>
+
+<p>3. Come up with one situation where the assignment x = y = 1 is valid in Scala. (Hint: Pick a suitable type for x.)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">var</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="nc">Unit</span>
+</span><span class='line'><span class="k">var</span> <span class="n">y</span> <span class="k">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="n">x</span> <span class="k">=</span> <span class="n">y</span> <span class="k">=</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4.Write a Scala equivalent for the Java loop <code>for (int i = 10; i >= 0; i&mdash;) System.out.println(i); </code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">10</span> <span class="n">to</span> <span class="mi">0</span> <span class="n">by</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="n">println</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>5. Write a procedure countdown(n: Int) that prints the numbers from n to 0.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">countdown</span><span class="o">(</span><span class="n">num</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">var</span> <span class="n">step</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">num</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="n">num</span> <span class="n">to</span> <span class="mi">0</span> <span class="n">by</span> <span class="n">step</span><span class="o">)</span> <span class="n">println</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6. Write a for loop for computing the product of the Unicode codes of all letters in a string. For example, the product of the characters in &ldquo;Hello&rdquo; is 9415087488L.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">var</span> <span class="n">prod</span> <span class="k">=</span> <span class="mi">1</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="s">&quot;Hello&quot;</span><span class="o">)</span> <span class="n">println</span><span class="o">(</span><span class="n">prod</span> <span class="o">*</span> <span class="n">i</span><span class="o">.</span><span class="n">toInt</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>7. Solve the preceding exercise without writing a loop. (Hint: Look at the StringOps Scaladoc.)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="s">&quot;Hello&quot;</span><span class="o">.</span><span class="n">foldLeft</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span> <span class="o">(</span><span class="k">_</span> <span class="o">*</span> <span class="k">_</span><span class="o">.</span><span class="n">toInt</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that here I use 1L instead of 1, because java.lang.Integer.MAX_VALUE is 2147483647, which is too small to hold the produce of products of &ldquo;Hello&rdquo;, so I need to specify Long as the products type.</p>
+
+<p>8. Write a function product(s : String) that computes the product, as described in the preceding exercises.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">product</span><span class="o">(</span><span class="n">str</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">str</span><span class="o">.</span><span class="n">foldLeft</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span> <span class="o">(</span><span class="k">_</span> <span class="o">*</span> <span class="k">_</span><span class="o">.</span><span class="n">toInt</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>9. Make the function of the preceding exercise a recursive function.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">product_r</span><span class="o">(</span><span class="n">str</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">str</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">case</span> <span class="s">&quot;&quot;</span> <span class="k">=&gt;</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'>      <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="n">str</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">toInt</span> <span class="o">*</span> <span class="n">product_r</span><span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="n">tail</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that we still specify the return value as Long for the same reason above.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Threading With Monitor in Ruby]]></title>
