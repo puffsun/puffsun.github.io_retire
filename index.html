@@ -9,7 +9,7 @@
   <meta name="author" content="George Sun">
 
   
-  <meta name="description" content="Recently I&rsquo;m reading the book Scala for the Impatient, the book is pretty brilliant, you can see that from the comments. Since I&rsquo;m a &hellip;">
+  <meta name="description" content="Almost every Rubyist love Ruby&rsquo;s Blocks, as well as Procs and Lambdas. These features allow you to pass code to a method then execute the piece &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,66 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/24/blocks-procs-lambdas/">Differences Among Blocks, Procs, and Lambdas in Ruby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-24T22:17:52+08:00" pubdate data-updated="true">Feb 24<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Almost every Rubyist love Ruby&rsquo;s Blocks, as well as Procs and Lambdas. These features allow you to pass code to a method then execute the piece of code at a later time. In this blog post, I&rsquo;ll talk about the differences among them.</p>
+
+<h3>Blocks</h3>
+
+<p>A block is a piece of code passed to a method via curly braces <code>{&hellip;}</code> or <code>do&hellip;end</code>. By convention, <code>{&hellip;}</code> is used within one line of code while <code>do&hellip;end</code> for multi-line code. After passing into method, the block could be triggered later by <code>yield</code> keyword to get a return value. The <code>yield</code> keyword can accept parameters, which will be passed into the block it&rsquo;s calling at that time. Let&rsquo;s see a example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">try</span>
+</span><span class='line'>  <span class="k">yield</span> <span class="k">if</span> <span class="nb">block_given?</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;no block&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/02/24/blocks-procs-lambdas/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -373,6 +433,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/24/blocks-procs-lambdas/">Differences Among Blocks, Procs, and Lambdas in Ruby</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2/">Solutions of Scala for the Impatient - Chapter1 and Chapter2</a>
       </li>
     
@@ -386,10 +450,6 @@
     
       <li class="post">
         <a href="/blog/2014/01/23/ruby-design-patterns/">Ruby Design Patterns</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/23/ruby-21-new-features/">Ruby 2.1 New Features</a>
       </li>
     
   </ul>
