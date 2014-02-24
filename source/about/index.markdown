@@ -9,7 +9,7 @@ keywords: "Java, Ruby, Rails, Web, Tech, Blog, Hadoop, Programming languages"
 description: "About me and my blog."
 ---
 
-My name is George Sun, I'm an experienced software developer, working at SAP Shanghai branch for the Web applications. But the contents in this blog has nothing to do with my work, basically they're my thoughts on software programming, you can call my blog as **Yet Another Tech Blog**.
+My name is George Sun, I'm an experienced software developer, working at SAP Shanghai branch for the Web applications. But the contents in this blog has nothing to do with my work, basically they're my thoughts on software programming, it's just **Yet Another Tech Blog**.
 
 I blog about what I'm learning now, what I have learned in the past. To be specific, most of them will be tutorials on *Web technologies, Java, Ruby, Rails, Hadoop ecosystem*, etc.. If you're interested in them too, don't  hesitate to subscribe my blog's RSS feeds, I'll appreciate it, also you're welcomed to leave comments on the posts to do further discussion.
 
