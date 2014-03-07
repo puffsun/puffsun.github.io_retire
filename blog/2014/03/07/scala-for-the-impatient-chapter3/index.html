@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Solutions of Scala for the Impatient - Chapter3 - George's dream port</title>
+  <meta name="author" content="George Sun">
+
+  
+  <meta name="description" content="Scala for the Impatient solutions">
+  <meta name="keywords" content="Scala for the Impatient solutions">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://puffsun.github.io/blog/2014/03/07/scala-for-the-impatient-chapter3">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="George's dream port" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+<meta name="keywords" content="Scala for the Impatient solutions" />
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">George's dream port</a></h1>
+  
+    <h2>Programming thoughts</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:puffsun.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Solutions of Scala for the Impatient - Chapter3</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-07T23:01:32+08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In this blog post, I will continue to post the solutions of <a href="http://www.amazon.com/Scala-Impatient-Cay-S-Horstmann/dp/0321774094">Scala for the Impatient</a>, Chapter 3 as book notes, hopes it could help if you&rsquo;re reading the book too. Without further ado, let&rsquo;s see the solutions in Scala.</p>
+
+<p>1. Write a code snippet that sets a to an array of n random integers between 0 (inclusive) and n (exclusive).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">scala.util.Random</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="n">random_arr</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nc">Array</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="n">n</span><span class="o">)</span> <span class="o">{</span><span class="nc">Random</span><span class="o">.</span><span class="n">nextInt</span><span class="o">(</span><span class="n">n</span><span class="o">)}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<p>2. Write a loop that swaps adjacent elements of an array of integers. For example, <code>Array(1, 2, 3, 4, 5)</code> becomes <code>Array(2, 1, 4, 3, 5)</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">arr</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">)</span>
+</span><span class='line'><span class="n">arr</span><span class="o">.</span><span class="n">grouped</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">flatMap</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nc">Array</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Array</span><span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nc">Array</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Array</span><span class="o">(</span><span class="n">x</span><span class="o">)</span>
+</span><span class='line'><span class="o">}.</span><span class="n">toArray</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3. Repeat the preceding assignment, but produce a new array with the swapped values. Use <code>for/yield</code><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">arr</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">new_arr</span> <span class="k">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">arr</span><span class="o">.</span><span class="n">length</span><span class="o">)</span> <span class="k">yield</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">arr</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+</span><span class='line'>          <span class="n">arr</span><span class="o">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">arr</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
+</span><span class='line'>   <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4. Given an array of integers, produce a new array that contains all positive values of the original array, in their original order, followed by all values that are zero or negative, in their original order.</p>
+
+<p>There&rsquo;s a function called <code>partition</code> built-in into Scala by <a href="http://www.scala-lang.org/api/2.10.3/index.html#scala.collection.mutable.ArrayOps">ArrayOps</a> class, below is the implementation via <code>partition</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">arr</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mf">3.2</span><span class="o">,</span> <span class="o">-</span><span class="mi">9</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="o">-</span><span class="mi">10</span><span class="o">)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">partition</span> <span class="o">{</span><span class="k">_</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">}</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">_1</span> <span class="o">++</span>   <span class="n">p</span><span class="o">.</span><span class="n">_2</span>  <span class="c1">// produce Array(2.0, 9.0, 8.0, 5.0, -1.0, -3.0, -3.2, -9.0, -10.0)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, we can also achieve without using the partition function, let&rsquo;s do it:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">ta</span> <span class="k">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">e</span> <span class="k">&lt;-</span> <span class="n">a</span> <span class="k">if</span> <span class="n">e</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="k">yield</span> <span class="n">e</span>
+</span><span class='line'><span class="k">val</span> <span class="n">tb</span> <span class="k">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">e</span> <span class="k">&lt;-</span> <span class="n">a</span> <span class="k">if</span> <span class="n">e</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="k">yield</span> <span class="n">e</span>
+</span><span class='line'><span class="n">ta</span> <span class="o">++</span> <span class="n">tb</span> <span class="c1">// produce: Array(2.0, 9.0, 8.0, 5.0, -1.0, -3.0, -3.2, -9.0, -10.0)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>5. How do you compute the average of an <code>Array[Double]</code>?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">arr</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mf">3.2</span><span class="o">,</span> <span class="o">-</span><span class="mi">9</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="o">-</span><span class="mi">10</span><span class="o">)</span>
+</span><span class='line'><span class="n">arr</span><span class="o">.</span><span class="n">sum</span> <span class="o">/</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6. How do you rearrange the elements of an <code>Array[Int]</code> so that they appear in reverse sorted order? How do you do the same with an <code>ArrayBuffer[Int]</code>?</p>
+
+<p>With array, we can sort it in reverse order by below code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">scala.util.Sorting</span>
+</span><span class='line'><span class="k">val</span> <span class="n">arr</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mf">3.2</span><span class="o">,</span> <span class="o">-</span><span class="mi">9</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="o">-</span><span class="mi">10</span><span class="o">)</span>
+</span><span class='line'><span class="nc">Sorting</span><span class="o">.</span><span class="n">quickSort</span><span class="o">(</span><span class="n">are</span><span class="o">)</span> <span class="c1">// Sort the array in place</span>
+</span><span class='line'><span class="n">arr</span><span class="o">.</span><span class="n">reverse</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With ArrayBuffer:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">collection.mutable.ArrayBuffer</span>
+</span><span class='line'><span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="nc">ArrayBuffer</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">7</span><span class="o">)</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">sortWith</span><span class="o">(</span><span class="k">_</span><span class="o">&gt;</span><span class="k">_</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>7. Write a code snippet that produces all values from an array with duplicates removed. (Hint: Look at Scaladoc.)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">arr</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+</span><span class='line'><span class="n">arr</span><span class="o">.</span><span class="n">distinct</span> <span class="c1">// produce Array(1, 2, -1)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>8. Rewrite the example at the end of Section 3.4, “Transforming Arrays,” on page 32. Collect indexes of the negative elements, reverse the sequence, drop the last index, and call <code>a.remove(i)</code> for each index. Compare the efficiency of this approach with the two approaches in Section 3.4.</p>
+
+<p>We can get the same result with below code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">collection.mutable.ArrayBuffer</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="nc">ArrayBuffer</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">6</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">)</span>
+</span><span class='line'><span class="k">var</span> <span class="n">indexes</span> <span class="k">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">a</span><span class="o">.</span><span class="n">length</span> <span class="k">if</span> <span class="n">a</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="k">yield</span> <span class="n">i</span>
+</span><span class='line'><span class="n">indexes</span> <span class="k">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">reverse</span>
+</span><span class='line'><span class="n">indexes</span><span class="o">.</span><span class="n">dropRight</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">indexes</span><span class="o">.</span><span class="n">length</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">a</span><span class="o">.</span><span class="n">remove</span><span class="o">(</span><span class="n">indexes</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now let see the time/space efficiency of above code. First, we use indexes to store the indexes of negative numbers, so it will take O(n) extra space. Then we traverse the original array for two times, reverse the indexes of negative numbers once, so the total time complexity will be 3 * O(n) ~ O(n)</p>
+
+<p>9. Make a collection of all time zones returned by <code>java.util.TimeZone.getAvailableIDs</code> that are in America. Strip off the &ldquo;America/&rdquo; prefix and sort the result.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">zones</span> <span class="k">=</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">TimeZone</span><span class="o">.</span><span class="n">getAvailableIDs</span><span class="o">()</span>
+</span><span class='line'><span class="k">val</span> <span class="n">zones_no_prefix</span> <span class="k">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">zone</span> <span class="k">&lt;-</span> <span class="n">zones</span> <span class="k">if</span> <span class="n">zone</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;America&quot;</span><span class="o">))</span> <span class="k">yield</span> <span class="n">zone</span><span class="o">.</span><span class="n">stripPrefix</span><span class="o">(</span><span class="s">&quot;America/&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">util</span><span class="o">.</span><span class="nc">Sorting</span><span class="o">.</span><span class="n">quickSort</span><span class="o">(</span><span class="n">zones_no_prefix</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>10. Import <code>java.awt.datatransfer._</code> and make an object of type <code>SystemFlavorMap</code> with the call <code>val flavors = SystemFlavorMap.getDefaultFlavorMap().asInstanceOf[SystemFlavorMap]</code>, Then call the <code>getNativesForFlavor</code> method with parameter <code>DataFlavor.imageFlavor</code> and get the return value as a Scala buffer. (Why this obscure class? It’s hard to find uses of <code>java.util.List</code> in the standard Java library.)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">flavMap</span> <span class="k">=</span> <span class="nc">SystemFlavorMap</span><span class="o">.</span><span class="n">getDefaultFlavorMap</span><span class="o">().</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">SystemFlavorMap</span><span class="o">]</span>
+</span><span class='line'><span class="k">val</span> <span class="n">natives</span> <span class="k">=</span> <span class="n">flavMap</span><span class="o">.</span><span class="n">getNativesForFlavor</span><span class="o">(</span><span class="nc">DataFlavor</span><span class="o">.</span><span class="n">imageFlavor</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="https://bitbucket.org/McDamon/scalaimpatient/src/4a11167459b2/ch03/answers.txt">Scala for the Impatient</a><a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">George Sun</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-07T23:01:32+08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/scala/'>Scala</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://puffsun.github.io/blog/2014/03/07/scala-for-the-impatient-chapter3/" data-via="" data-counturl="http://puffsun.github.io/blog/2014/03/07/scala-for-the-impatient-chapter3/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/24/blocks-procs-lambdas/" title="Previous Post: Differences among Blocks, Procs, and Lambdas in Ruby">&laquo; Differences among Blocks, Procs, and Lambdas in Ruby</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/1dc196afc203edd9f2633ec0b3fdcaa9?s=200" alt="Gravatar of George Sun " title="Gravatar of George Sun" />
+	</span>
+  <span>Software developer @ SAP Shanghai, China</span>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/scala-for-the-impatient-chapter3/">Solutions of Scala for the Impatient - Chapter3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/24/blocks-procs-lambdas/">Differences Among Blocks, Procs, and Lambdas in Ruby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2/">Solutions of Scala for the Impatient - Chapter1 and Chapter2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/25/threading-with-monitor-in-ruby/">Threading With Monitor in Ruby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/24/bindings-in-ruby/">Bindings in Ruby</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/103092209824087504629?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=0&speed=0&skin=&isTitle=0&noborder=1&isWeibo=0&isFans=&uid=1994207995&verifier=adfb3d94&dpc">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - George Sun -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'puffsun';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://puffsun.github.io/blog/2014/03/07/scala-for-the-impatient-chapter3/';
+        var disqus_url = 'http://puffsun.github.io/blog/2014/03/07/scala-for-the-impatient-chapter3/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
