@@ -3,9 +3,9 @@ layout: post
 title: "Solutions of Scala for the Impatient - chapter1 and chapter2"
 date: 2014-02-24 20:09:58 +0800
 comments: true
-categories: scala
-keywords: scala impatient solutions
-description: scala impatient solutions
+categories: Scala
+keywords: Scala impatient solutions
+description: Scala impatient solutions
 ---
 
 Recently I'm reading the book [Scala for the Impatient](http://www.amazon.com/Scala-Impatient-Cay-S-Horstmann/dp/0321774094), the book is pretty brilliant, you can see that from the comments. Since I'm a newbie to Scala, I'm try to complete the exercises after every chapter, I post the solutions in a serious of blog posts as book notes.
