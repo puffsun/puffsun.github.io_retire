@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Scala | George's dream port]]></title>
   <link href="http://puffsun.github.io/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-03-07T23:27:32+08:00</updated>
+  <updated>2014-03-07T23:51:26+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -152,7 +152,13 @@ val zones_no_prefix = for (zone &lt;- zones if zone.startsWith("America")) yield
 util.Sorting.quickSort(zones_no_prefix)
 </code></pre>
 
-<p>```</p>
+<p><code>
+Another solution more in Scala way:
+</code>scala
+val zones = java.util.TimeZone.getAvailableIDs
+val zones_no_prefix = zones.filter(<em>.startsWith(&ldquo;America/&rdquo;)).map(</em>.drop(&ldquo;America/&rdquo;.size))
+util.Sorting.quickSort(zones_no_prefix)
+```</p>
 
 <p>10. Import <code>java.awt.datatransfer._</code> and make an object of type <code>SystemFlavorMap</code> with the call <code>val flavors = SystemFlavorMap.getDefaultFlavorMap().asInstanceOf[SystemFlavorMap]</code>, Then call the <code>getNativesForFlavor</code> method with parameter <code>DataFlavor.imageFlavor</code> and get the return value as a Scala buffer. (Why this obscure class? It’s hard to find uses of <code>java.util.List</code> in the standard Java library.)
 ```scala</p>

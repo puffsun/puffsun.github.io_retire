@@ -258,6 +258,17 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>Another solution more in Scala way:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">zones</span> <span class="k">=</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">TimeZone</span><span class="o">.</span><span class="n">getAvailableIDs</span>
+</span><span class='line'><span class="k">val</span> <span class="n">zones_no_prefix</span> <span class="k">=</span> <span class="n">zones</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;America/&quot;</span><span class="o">)).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">drop</span><span class="o">(</span><span class="s">&quot;America/&quot;</span><span class="o">.</span><span class="n">size</span><span class="o">))</span>
+</span><span class='line'><span class="n">util</span><span class="o">.</span><span class="nc">Sorting</span><span class="o">.</span><span class="n">quickSort</span><span class="o">(</span><span class="n">zones_no_prefix</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <p>10. Import <code>java.awt.datatransfer._</code> and make an object of type <code>SystemFlavorMap</code> with the call <code>val flavors = SystemFlavorMap.getDefaultFlavorMap().asInstanceOf[SystemFlavorMap]</code>, Then call the <code>getNativesForFlavor</code> method with parameter <code>DataFlavor.imageFlavor</code> and get the return value as a Scala buffer. (Why this obscure class? It’s hard to find uses of <code>java.util.List</code> in the standard Java library.)</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
