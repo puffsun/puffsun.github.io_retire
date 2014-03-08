@@ -14,6 +14,7 @@ description: Scala for the impatient solutions of chapter 4
 val books = Map("Scala for the Impatient" -> 30, "Ruby under a Microscope" -> 40, "Ruby Cookbook" -> 35)
 val discounted = for((b, p) <- books) yield (b, p * 0.9)
 ```
+<!--more-->
 
 2\. Write a program that reads words from a file. Use a mutable map to count how often each word appears. To read the words, simply use a <code>java.util.Scanner</code>:
 ```scala
