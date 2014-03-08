@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Scala | George's dream port]]></title>
   <link href="http://puffsun.github.io/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-03-07T23:51:26+08:00</updated>
+  <updated>2014-03-08T14:29:14+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Solutions of Scala for the Impatient - Chapter3]]></title>
+    <title type="html"><![CDATA[Solutions to Scala for the Impatient - Chapter3]]></title>
     <link href="http://puffsun.github.io/blog/2014/03/07/scala-for-the-impatient-chapter3/"/>
     <updated>2014-03-07T23:01:32+08:00</updated>
     <id>http://puffsun.github.io/blog/2014/03/07/scala-for-the-impatient-chapter3</id>
@@ -180,7 +180,7 @@ val natives = flavMap.getNativesForFlavor(DataFlavor.imageFlavor)
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Solutions of Scala for the Impatient - Chapter1 and Chapter2]]></title>
+    <title type="html"><![CDATA[Solutions to Scala for the Impatient - Chapter1 and Chapter2]]></title>
     <link href="http://puffsun.github.io/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2/"/>
     <updated>2014-02-24T20:09:58+08:00</updated>
     <id>http://puffsun.github.io/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2</id>
@@ -191,7 +191,7 @@ val natives = flavMap.getNativesForFlavor(DataFlavor.imageFlavor)
 <!--more-->
 
 
-<h3>Solutions of Chapter 1</h3>
+<h3>Solutions to exercises of Chapter 1</h3>
 
 <p>8. One way to create random file or directory names is to produce a random BigInt and convert it to base 36, yielding a string such as &ldquo;qsnvbevtomcj38o06kul&rdquo;. Poke around Scaladoc to find a way of doing this in Scala.</p>
 
@@ -222,7 +222,7 @@ To get an idea what they can do, we need to check Scala document.</p>
 
 <p>As far as I know, in Scala, the take* and drop* method will always generate new String instances(please correct me if I&rsquo;m wrong), I think this is the difference.</p>
 
-<h3>Solutions of Chapter 2</h3>
+<h3>Solutions to exercises of Chapter 2</h3>
 
 <p>1. The signum of a number is 1 if the number is positive, –1 if it is negative, and 0 if it is zero. Write a function that computes this value.
 ```scala</p>
