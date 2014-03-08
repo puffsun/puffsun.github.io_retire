@@ -4,7 +4,7 @@
   <title><![CDATA[George's dream port]]></title>
   <link href="http://puffsun.github.io/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-03-08T14:29:14+08:00</updated>
+  <updated>2014-03-08T14:31:36+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -18,7 +18,7 @@
     <link href="http://puffsun.github.io/blog/2014/03/07/scala-for-the-impatient-chapter3/"/>
     <updated>2014-03-07T23:01:32+08:00</updated>
     <id>http://puffsun.github.io/blog/2014/03/07/scala-for-the-impatient-chapter3</id>
-    <content type="html"><![CDATA[<p>In this blog post, I will continue to post the solutions of <a href="http://www.amazon.com/Scala-Impatient-Cay-S-Horstmann/dp/0321774094">Scala for the Impatient</a>, Chapter 3 as book notes, hopes it could help if you&rsquo;re reading the book too. Without further ado, let&rsquo;s see the solutions in Scala.</p>
+    <content type="html"><![CDATA[<p>In this blog post, I will continue to post the solutions to <a href="http://www.amazon.com/Scala-Impatient-Cay-S-Horstmann/dp/0321774094">Scala for the Impatient</a>, Chapter 3 as book notes, hopes it could help if you&rsquo;re reading the book too. Without further ado, let&rsquo;s see the solutions in Scala.</p>
 
 <p>1. Write a code snippet that sets a to an array of n random integers between 0 (inclusive) and n (exclusive).</p>
 
