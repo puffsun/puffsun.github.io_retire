@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Solutions of Scala for the Impatient - Chapter3"
+title: "Solutions to Scala for the Impatient - Chapter3"
 date: 2014-03-07 23:01:32 +0800
 comments: true
 categories: Scala
@@ -8,7 +8,7 @@ keywords: Scala for the Impatient solutions
 description: Scala for the Impatient solutions
 ---
 
-In this blog post, I will continue to post the solutions of [Scala for the Impatient](http://www.amazon.com/Scala-Impatient-Cay-S-Horstmann/dp/0321774094), Chapter 3 as book notes, hopes it could help if you're reading the book too. Without further ado, let's see the solutions in Scala.
+In this blog post, I will continue to post the solutions to [Scala for the Impatient](http://www.amazon.com/Scala-Impatient-Cay-S-Horstmann/dp/0321774094), Chapter 3 as book notes, hopes it could help if you're reading the book too. Without further ado, let's see the solutions in Scala.
 
 1\. Write a code snippet that sets a to an array of n random integers between 0 (inclusive) and n (exclusive).
 ```scala
@@ -121,4 +121,4 @@ util.Sorting.quickSort(zones_no_prefix)
 	val natives = flavMap.getNativesForFlavor(DataFlavor.imageFlavor)
 ```
 
-[^1]: [Scala for the Impatient](https://bitbucket.org/McDamon/scalaimpatient/src/4a11167459b2/ch03/answers.txt)
+[^1]: [Scala for the Impatient solutions, by McDamon](https://bitbucket.org/McDamon/scalaimpatient/src/4a11167459b2/ch03/answers.txt)

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Solutions of Scala for the Impatient - chapter1 and chapter2"
+title: "Solutions to Scala for the Impatient - chapter1 and chapter2"
 date: 2014-02-24 20:09:58 +0800
 comments: true
 categories: Scala
@@ -13,7 +13,7 @@ Recently I'm reading the book [Scala for the Impatient](http://www.amazon.com/Sc
 Since both chapter 1 and chapter 2 are very simple, I'll post the solutions together here with this blog post.
 
 <!--more-->
-###Solutions of Chapter 1
+###Solutions to exercises of Chapter 1
 8\. One way to create random file or directory names is to produce a random BigInt and convert it to base 36, yielding a string such as "qsnvbevtomcj38o06kul". Poke around Scaladoc to find a way of doing this in Scala.
 
 ```scala
@@ -38,7 +38,7 @@ The difference between then and java.lang.String is that, before Java 7, String#
 As far as I know, in Scala, the take\* and drop\* method will always generate new String instances(please correct me if I'm wrong), I think this is the difference.
 
 
-###Solutions of Chapter 2
+###Solutions to exercises of Chapter 2
 1\. The signum of a number is 1 if the number is positive, –1 if it is negative, and 0 if it is zero. Write a function that computes this value.
 ```scala
 	def signum(num: Int) = { if (num > 0) 1 else if (num < 0) -1 else 0 }
