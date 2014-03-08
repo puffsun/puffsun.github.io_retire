@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Scala | George's dream port]]></title>
   <link href="http://puffsun.github.io/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-03-08T14:31:36+08:00</updated>
+  <updated>2014-03-08T21:00:21+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -12,6 +12,185 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Solution to Scala for the Impatient - Chapter4]]></title>
+    <link href="http://puffsun.github.io/blog/2014/03/08/scala-for-the-impatient-chapter4/"/>
+    <updated>2014-03-08T20:49:44+08:00</updated>
+    <id>http://puffsun.github.io/blog/2014/03/08/scala-for-the-impatient-chapter4</id>
+    <content type="html"><![CDATA[<p>1. Set up a map of prices for a number of gizmos that you covet. Then produce a second map with the same keys and the prices at a 10 percent discount.</p>
+
+<p><code>scala
+val books = Map("Scala for the Impatient" -&gt; 30, "Ruby under a Microscope" -&gt; 40, "Ruby Cookbook" -&gt; 35)
+val discounted = for((b, p) &lt;- books) yield (b, p * 0.9)
+</code></p>
+
+<!--more-->
+
+
+<p>2. Write a program that reads words from a file. Use a mutable map to count how often each word appears. To read the words, simply use a <code>java.util.Scanner</code>:
+```scala
+val in = new java.util.Scanner(new java.io.File(&ldquo;myfile.txt&rdquo;))
+while (in.hasNext())</p>
+
+<pre><code>process in.next()
+</code></pre>
+
+<p>```
+Or look at Chapter 9 for a Scalaesque way.
+At the end, print out all words and their counts.</p>
+
+<p>```scala
+def count_words(file: String): Unit = {</p>
+
+<pre><code>val container = collection.mutable.Map[String, Int]()
+val in = new java.util.Scanner(new java.io.File(file))
+while (in.hasNext()) {
+    val word =  in.next()
+    if (container.contains(word))
+        container(word) += 1
+    else
+        container(word) = 1
+}
+for ((k, v) &lt;- container)
+    println(k + ": " + v)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>3. Repeat the preceding exercise with an immutable map.
+```scala
+def count_words(file: String): Unit = {</p>
+
+<pre><code>var container = Map[String, Int]()
+val in = new java.util.Scanner(new java.io.File(file))
+while (in.hasNext()) {
+    val word = in.next()
+    container = container + (word -&gt; (container.getOrElse(word, 0) + 1))
+}
+println(container)
+</code></pre>
+
+<p>}
+<code>
+Or we can achieve nearly the same more Scalaesque(the result is little different, but you get the idea)[^1]:
+</code>scala
+import scala.io.Source</p>
+
+<p>def count_words(file: String): Unit = {</p>
+
+<pre><code>val source = Source.fromFile(file)
+val words = for (word &lt;- source.getLines.toArray) yield word
+val wordCounts = for (word &lt;- words.distinct) yield {
+    (word, words.count(_ == word))
+}
+val wordCountsMap = wordCounts.toMap
+println(wordCountsMap)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>4. Repeat the preceding exercise with a sorted map, so that the words are printed in sorted order.
+```scala
+def count_words(file: String): Unit = {</p>
+
+<pre><code>var container = collection.immutable.SortedMap[String, Int]()
+val in = new java.util.Scanner(new java.io.File(file))
+while (in.hasNext()) {
+    val word = in.next()
+    container = container + (word -&gt; (container.getOrElse(word, 0) + 1))
+}
+println(container)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>5. Repeat the preceding exercise with a <code>java.util.TreeMap</code> that you adapt to the Scala API.
+```scala
+def count_words(file: String): Unit = {</p>
+
+<pre><code>val container = new java.util.TreeMap[String, Int]
+val in = new java.util.Scanner(new java.io.File(file))
+while (in.hasNext()) {
+    val word =  in.next()
+    if (container.containsKey(word))
+        container.put(word, container.get(word) + 1)
+    else
+        container.put(word, 1)
+}
+println(container)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>6. Define a linked hash map that maps &ldquo;Monday&rdquo; to <code>java.util.Calendar.MONDAY</code>, and similarly for the other weekdays. Demonstrate that the elements are visited in insertion order.
+```scala
+val daysOfTheWeek = LinkedHashMap(&ldquo;Monday&rdquo; &ndash;> java.util.Calendar.MONDAY,</p>
+
+<pre><code>"Tuesday" -&gt; java.util.Calendar.TUESDAY,
+"Wednesday" -&gt; java.util.Calendar.WEDNESDAY,
+"Thursday" -&gt; java.util.Calendar.THURSDAY,
+"Friday" -&gt; java.util.Calendar.FRIDAY,
+"Saturday" -&gt; java.util.Calendar.SATURDAY,
+"Sunday" -&gt; java.util.Calendar.SUNDAY)
+</code></pre>
+
+<p>println(daysOfTheWeek)
+```</p>
+
+<p>7. Print a table of all Java properties, like this:
+<code>
+java.runtime.name             | Java(TM) SE Runtime Environment
+sun.boot.library.path         | /home/apps/jdk1.6.0_21/jre/lib/i386
+java.vm.version               | 17.0-b16
+java.vm.vendor                | Sun Microsystems Inc.
+java.vendor.url               | http://java.sun.com/
+path.separator                | :
+java.vm.name                  | Java HotSpot(TM) Server VM
+</code>
+You need to find the length of the longest key before you can print the table.
+<code>scala
+import scala.collection.JavaConversions.propertiesAsScalaMap
+val props: scala.collection.Map[String, String] = System.getProperties
+val len = props.keys.maxBy(_.length).length // java.vm.specification.version
+for ((k, v) &lt;- props) printf("%-"+ len + "s|%s\n", k, v)
+</code></p>
+
+<p>8. Write a function <code>min_max(values: Array[Int])</code> that returns a pair containing the smallest and largest values in the array.
+```scala
+def min_max(values: Array[Int]): Tuple2[Int, Int] = {</p>
+
+<pre><code>(values.min, values.max)
+</code></pre>
+
+<p>}
+```</p>
+
+<p>9. Write a function lt_eq_gt(values: Array[Int], v: Int) that returns a triple containing the counts of values less than v, equal to v, and greater than v.
+```scala
+def lt_eg_gt(values: Array[Int], v: Int): Tuple3[Int, Int, Int] = {</p>
+
+<pre><code>(values.count(_ &lt; v), values.count(_ == v), values.count(_&gt; v))
+</code></pre>
+
+<p>}
+```</p>
+
+<p>10. What happens when you zip together two strings, such as <code>&ldquo;Hello&rdquo;.zip(&ldquo;World&rdquo;)</code>? Come up with a plausible use case.
+<code>scala
+// produce: scala.collection.immutable.IndexedSeq[(Char, Char)] = Vector((H,W), (e,o), (l,r), (l,l), (o,d))
+"Hello".zip("World")
+</code>
+From above code we can see that the zip of two String will produce a immutable Vector, which contains Tuples. The Tuples contains a pair of characters in the same position. A possible use case is to produce a immutable map with left characters as keys and right side characters as values, you can transfer the zipped characters to a immutable map via:
+<code>scala
+val map = "Hello".zip("World").toMap
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Solutions to Scala for the Impatient - Chapter3]]></title>
@@ -172,7 +351,7 @@ val natives = flavMap.getNativesForFlavor(DataFlavor.imageFlavor)
 <hr/>
 <ol>
 <li id="fn:1">
-<p><a href="https://bitbucket.org/McDamon/scalaimpatient/src/4a11167459b2/ch03/answers.txt">Scala for the Impatient</a><a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+<p><a href="https://bitbucket.org/McDamon/scalaimpatient/src/4a11167459b2/ch03/answers.txt">Scala for the Impatient solutions, by McDamon</a><a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
 </ol>
 </div>
 

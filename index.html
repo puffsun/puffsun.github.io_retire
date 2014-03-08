@@ -9,7 +9,7 @@
   <meta name="author" content="George Sun">
 
   
-  <meta name="description" content="In this blog post, I will continue to post the solutions to Scala for the Impatient, Chapter 3 as book notes, hopes it could help if you&rsquo;re &hellip;">
+  <meta name="description" content="1. Set up a map of prices for a number of gizmos that you covet. Then produce a second map with the same keys and the prices at a 10 percent discount &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,54 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/08/scala-for-the-impatient-chapter4/">Solution to Scala for the Impatient - Chapter4</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-08T20:49:44+08:00" pubdate data-updated="true">Mar 8<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>1. Set up a map of prices for a number of gizmos that you covet. Then produce a second map with the same keys and the prices at a 10 percent discount.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">books</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;Scala for the Impatient&quot;</span> <span class="o">-&gt;</span> <span class="mi">30</span><span class="o">,</span> <span class="s">&quot;Ruby under a Microscope&quot;</span> <span class="o">-&gt;</span> <span class="mi">40</span><span class="o">,</span> <span class="s">&quot;Ruby Cookbook&quot;</span> <span class="o">-&gt;</span> <span class="mi">35</span><span class="o">)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">discounted</span> <span class="k">=</span> <span class="k">for</span><span class="o">((</span><span class="n">b</span><span class="o">,</span> <span class="n">p</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">books</span><span class="o">)</span> <span class="k">yield</span> <span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">p</span> <span class="o">*</span> <span class="mf">0.9</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/03/08/scala-for-the-impatient-chapter4/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -489,6 +537,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/08/scala-for-the-impatient-chapter4/">Solution to Scala for the Impatient - Chapter4</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/07/scala-for-the-impatient-chapter3/">Solutions to Scala for the Impatient - Chapter3</a>
       </li>
     
@@ -502,10 +554,6 @@
     
       <li class="post">
         <a href="/blog/2014/01/25/threading-with-monitor-in-ruby/">Threading With Monitor in Ruby</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/24/bindings-in-ruby/">Bindings in Ruby</a>
       </li>
     
   </ul>

@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Solution to Scala for the Impatient - Chapter4 - George's dream port</title>
+  <meta name="author" content="George Sun">
+
+  
+  <meta name="description" content="Scala for the impatient solutions of chapter 4">
+  <meta name="keywords" content="Scala for the impatient solution">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://puffsun.github.io/blog/2014/03/08/scala-for-the-impatient-chapter4">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="George's dream port" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+<meta name="keywords" content="Scala for the impatient solution" />
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">George's dream port</a></h1>
+  
+    <h2>Programming thoughts</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:puffsun.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Solution to Scala for the Impatient - Chapter4</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-08T20:49:44+08:00" pubdate data-updated="true">Mar 8<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>1. Set up a map of prices for a number of gizmos that you covet. Then produce a second map with the same keys and the prices at a 10 percent discount.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">books</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;Scala for the Impatient&quot;</span> <span class="o">-&gt;</span> <span class="mi">30</span><span class="o">,</span> <span class="s">&quot;Ruby under a Microscope&quot;</span> <span class="o">-&gt;</span> <span class="mi">40</span><span class="o">,</span> <span class="s">&quot;Ruby Cookbook&quot;</span> <span class="o">-&gt;</span> <span class="mi">35</span><span class="o">)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">discounted</span> <span class="k">=</span> <span class="k">for</span><span class="o">((</span><span class="n">b</span><span class="o">,</span> <span class="n">p</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">books</span><span class="o">)</span> <span class="k">yield</span> <span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">p</span> <span class="o">*</span> <span class="mf">0.9</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<p>2. Write a program that reads words from a file. Use a mutable map to count how often each word appears. To read the words, simply use a <code>java.util.Scanner</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">in</span> <span class="k">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Scanner</span><span class="o">(</span><span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="nc">File</span><span class="o">(</span><span class="s">&quot;myfile.txt&quot;</span><span class="o">))</span>
+</span><span class='line'><span class="k">while</span> <span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="n">hasNext</span><span class="o">())</span>
+</span><span class='line'>  <span class="n">process</span> <span class="n">in</span><span class="o">.</span><span class="n">next</span><span class="o">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or look at Chapter 9 for a Scalaesque way.
+At the end, print out all words and their counts.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">count_words</span><span class="o">(</span><span class="n">file</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">container</span> <span class="k">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">mutable</span><span class="o">.</span><span class="nc">Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">]()</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">in</span> <span class="k">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Scanner</span><span class="o">(</span><span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="nc">File</span><span class="o">(</span><span class="n">file</span><span class="o">))</span>
+</span><span class='line'>  <span class="k">while</span> <span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="n">hasNext</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">word</span> <span class="k">=</span>  <span class="n">in</span><span class="o">.</span><span class="n">next</span><span class="o">()</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">container</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">word</span><span class="o">))</span>
+</span><span class='line'>          <span class="n">container</span><span class="o">(</span><span class="n">word</span><span class="o">)</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">container</span><span class="o">(</span><span class="n">word</span><span class="o">)</span> <span class="k">=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">for</span> <span class="o">((</span><span class="n">k</span><span class="o">,</span> <span class="n">v</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">container</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">println</span><span class="o">(</span><span class="n">k</span> <span class="o">+</span> <span class="s">&quot;: &quot;</span> <span class="o">+</span> <span class="n">v</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3. Repeat the preceding exercise with an immutable map.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">count_words</span><span class="o">(</span><span class="n">file</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">var</span> <span class="n">container</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">]()</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">in</span> <span class="k">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Scanner</span><span class="o">(</span><span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="nc">File</span><span class="o">(</span><span class="n">file</span><span class="o">))</span>
+</span><span class='line'>  <span class="k">while</span> <span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="n">hasNext</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">word</span> <span class="k">=</span> <span class="n">in</span><span class="o">.</span><span class="n">next</span><span class="o">()</span>
+</span><span class='line'>      <span class="n">container</span> <span class="k">=</span> <span class="n">container</span> <span class="o">+</span> <span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">container</span><span class="o">.</span><span class="n">getOrElse</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">))</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="n">println</span><span class="o">(</span><span class="n">container</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or we can achieve nearly the same more Scalaesque(the result is little different, but you get the idea)<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">scala.io.Source</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="n">count_words</span><span class="o">(</span><span class="n">file</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">source</span> <span class="k">=</span> <span class="nc">Source</span><span class="o">.</span><span class="n">fromFile</span><span class="o">(</span><span class="n">file</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">words</span> <span class="k">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">word</span> <span class="k">&lt;-</span> <span class="n">source</span><span class="o">.</span><span class="n">getLines</span><span class="o">.</span><span class="n">toArray</span><span class="o">)</span> <span class="k">yield</span> <span class="n">word</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">wordCounts</span> <span class="k">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">word</span> <span class="k">&lt;-</span> <span class="n">words</span><span class="o">.</span><span class="n">distinct</span><span class="o">)</span> <span class="k">yield</span> <span class="o">{</span>
+</span><span class='line'>          <span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="n">words</span><span class="o">.</span><span class="n">count</span><span class="o">(</span><span class="k">_</span> <span class="o">==</span> <span class="n">word</span><span class="o">))</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">wordCountsMap</span> <span class="k">=</span> <span class="n">wordCounts</span><span class="o">.</span><span class="n">toMap</span>
+</span><span class='line'>  <span class="n">println</span><span class="o">(</span><span class="n">wordCountsMap</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4. Repeat the preceding exercise with a sorted map, so that the words are printed in sorted order.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">count_words</span><span class="o">(</span><span class="n">file</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">var</span> <span class="n">container</span> <span class="k">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">immutable</span><span class="o">.</span><span class="nc">SortedMap</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">]()</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">in</span> <span class="k">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Scanner</span><span class="o">(</span><span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="nc">File</span><span class="o">(</span><span class="n">file</span><span class="o">))</span>
+</span><span class='line'>  <span class="k">while</span> <span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="n">hasNext</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">word</span> <span class="k">=</span> <span class="n">in</span><span class="o">.</span><span class="n">next</span><span class="o">()</span>
+</span><span class='line'>      <span class="n">container</span> <span class="k">=</span> <span class="n">container</span> <span class="o">+</span> <span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">container</span><span class="o">.</span><span class="n">getOrElse</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">))</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="n">println</span><span class="o">(</span><span class="n">container</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>5. Repeat the preceding exercise with a <code>java.util.TreeMap</code> that you adapt to the Scala API.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">count_words</span><span class="o">(</span><span class="n">file</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">container</span> <span class="k">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">TreeMap</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">in</span> <span class="k">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Scanner</span><span class="o">(</span><span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="nc">File</span><span class="o">(</span><span class="n">file</span><span class="o">))</span>
+</span><span class='line'>  <span class="k">while</span> <span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="n">hasNext</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">word</span> <span class="k">=</span>  <span class="n">in</span><span class="o">.</span><span class="n">next</span><span class="o">()</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">container</span><span class="o">.</span><span class="n">containsKey</span><span class="o">(</span><span class="n">word</span><span class="o">))</span>
+</span><span class='line'>          <span class="n">container</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="n">container</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">word</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">container</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="n">println</span><span class="o">(</span><span class="n">container</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6. Define a linked hash map that maps &ldquo;Monday&rdquo; to <code>java.util.Calendar.MONDAY</code>, and similarly for the other weekdays. Demonstrate that the elements are visited in insertion order.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">daysOfTheWeek</span> <span class="k">=</span> <span class="nc">LinkedHashMap</span><span class="o">(</span><span class="s">&quot;Monday&quot;</span> <span class="o">-&gt;</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Calendar</span><span class="o">.</span><span class="nc">MONDAY</span><span class="o">,</span>
+</span><span class='line'>    <span class="s">&quot;Tuesday&quot;</span> <span class="o">-&gt;</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Calendar</span><span class="o">.</span><span class="nc">TUESDAY</span><span class="o">,</span>
+</span><span class='line'>    <span class="s">&quot;Wednesday&quot;</span> <span class="o">-&gt;</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Calendar</span><span class="o">.</span><span class="nc">WEDNESDAY</span><span class="o">,</span>
+</span><span class='line'>    <span class="s">&quot;Thursday&quot;</span> <span class="o">-&gt;</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Calendar</span><span class="o">.</span><span class="nc">THURSDAY</span><span class="o">,</span>
+</span><span class='line'>    <span class="s">&quot;Friday&quot;</span> <span class="o">-&gt;</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Calendar</span><span class="o">.</span><span class="nc">FRIDAY</span><span class="o">,</span>
+</span><span class='line'>    <span class="s">&quot;Saturday&quot;</span> <span class="o">-&gt;</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Calendar</span><span class="o">.</span><span class="nc">SATURDAY</span><span class="o">,</span>
+</span><span class='line'>    <span class="s">&quot;Sunday&quot;</span> <span class="o">-&gt;</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Calendar</span><span class="o">.</span><span class="nc">SUNDAY</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">println</span><span class="o">(</span><span class="n">daysOfTheWeek</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>7. Print a table of all Java properties, like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">java</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">name</span>             <span class="o">|</span> <span class="nc">Java</span><span class="o">(</span><span class="nc">TM</span><span class="o">)</span> <span class="nc">SE</span> <span class="nc">Runtime</span> <span class="nc">Environment</span>
+</span><span class='line'><span class="n">sun</span><span class="o">.</span><span class="n">boot</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">path</span>         <span class="o">|</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">jdk1</span><span class="o">.</span><span class="mf">6.0</span><span class="n">_21</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">i386</span>
+</span><span class='line'><span class="n">java</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">version</span>               <span class="o">|</span> <span class="mf">17.0</span><span class="o">-</span><span class="n">b16</span>
+</span><span class='line'><span class="n">java</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">vendor</span>                <span class="o">|</span> <span class="nc">Sun</span> <span class="nc">Microsystems</span> <span class="nc">Inc</span><span class="o">.</span>
+</span><span class='line'><span class="n">java</span><span class="o">.</span><span class="n">vendor</span><span class="o">.</span><span class="n">url</span>               <span class="o">|</span> <span class="n">http</span><span class="o">://</span><span class="n">java</span><span class="o">.</span><span class="n">sun</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+</span><span class='line'><span class="n">path</span><span class="o">.</span><span class="n">separator</span>                <span class="o">|</span> <span class="k">:</span>
+</span><span class='line'><span class="kt">java.vm.name</span>                  <span class="kt">|</span> <span class="kt">Java</span> <span class="kt">HotSpot</span><span class="o">(</span><span class="kt">TM</span><span class="o">)</span> <span class="kt">Server</span> <span class="kt">VM</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You need to find the length of the longest key before you can print the table.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">scala.collection.JavaConversions.propertiesAsScalaMap</span>
+</span><span class='line'><span class="k">val</span> <span class="n">props</span><span class="k">:</span> <span class="kt">scala.collection.Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">System</span><span class="o">.</span><span class="n">getProperties</span>
+</span><span class='line'><span class="k">val</span> <span class="n">len</span> <span class="k">=</span> <span class="n">props</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">maxBy</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">length</span><span class="o">).</span><span class="n">length</span> <span class="c1">// java.vm.specification.version</span>
+</span><span class='line'><span class="k">for</span> <span class="o">((</span><span class="n">k</span><span class="o">,</span> <span class="n">v</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">props</span><span class="o">)</span> <span class="n">printf</span><span class="o">(</span><span class="s">&quot;%-&quot;</span><span class="o">+</span> <span class="n">len</span> <span class="o">+</span> <span class="s">&quot;s|%s\n&quot;</span><span class="o">,</span> <span class="n">k</span><span class="o">,</span> <span class="n">v</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>8. Write a function <code>min_max(values: Array[Int])</code> that returns a pair containing the smallest and largest values in the array.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">min_max</span><span class="o">(</span><span class="n">values</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">Tuple2</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">(</span><span class="n">values</span><span class="o">.</span><span class="n">min</span><span class="o">,</span> <span class="n">values</span><span class="o">.</span><span class="n">max</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>9. Write a function lt_eq_gt(values: Array[Int], v: Int) that returns a triple containing the counts of values less than v, equal to v, and greater than v.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">lt_eg_gt</span><span class="o">(</span><span class="n">values</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span> <span class="n">v</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Tuple3</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">Int</span>, <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">(</span><span class="n">values</span><span class="o">.</span><span class="n">count</span><span class="o">(</span><span class="k">_</span> <span class="o">&lt;</span> <span class="n">v</span><span class="o">),</span> <span class="n">values</span><span class="o">.</span><span class="n">count</span><span class="o">(</span><span class="k">_</span> <span class="o">==</span> <span class="n">v</span><span class="o">),</span> <span class="n">values</span><span class="o">.</span><span class="n">count</span><span class="o">(</span><span class="k">_</span><span class="o">&gt;</span> <span class="n">v</span><span class="o">))</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>10. What happens when you zip together two strings, such as <code>&ldquo;Hello&rdquo;.zip(&ldquo;World&rdquo;)</code>? Come up with a plausible use case.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// produce: scala.collection.immutable.IndexedSeq[(Char, Char)] = Vector((H,W), (e,o), (l,r), (l,l), (o,d))</span>
+</span><span class='line'><span class="s">&quot;Hello&quot;</span><span class="o">.</span><span class="n">zip</span><span class="o">(</span><span class="s">&quot;World&quot;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>From above code we can see that the zip of two String will produce a immutable Vector, which contains Tuples. The Tuples contains a pair of characters in the same position. A possible use case is to produce a immutable map with left characters as keys and right side characters as values, you can transfer the zipped characters to a immutable map via:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">map</span> <span class="k">=</span> <span class="s">&quot;Hello&quot;</span><span class="o">.</span><span class="n">zip</span><span class="o">(</span><span class="s">&quot;World&quot;</span><span class="o">).</span><span class="n">toMap</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="https://bitbucket.org/McDamon/scalaimpatient/src/4a11167459b2/ch04/answers.txt">Scala for the Impatient solutions, by McDamon</a><a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">George Sun</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-08T20:49:44+08:00" pubdate data-updated="true">Mar 8<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/scala/'>Scala</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://puffsun.github.io/blog/2014/03/08/scala-for-the-impatient-chapter4/" data-via="" data-counturl="http://puffsun.github.io/blog/2014/03/08/scala-for-the-impatient-chapter4/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/07/scala-for-the-impatient-chapter3/" title="Previous Post: Solutions to Scala for the Impatient - Chapter3">&laquo; Solutions to Scala for the Impatient - Chapter3</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/1dc196afc203edd9f2633ec0b3fdcaa9?s=200" alt="Gravatar of George Sun " title="Gravatar of George Sun" />
+	</span>
+  <span>Software developer @ SAP Shanghai, China</span>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/08/scala-for-the-impatient-chapter4/">Solution to Scala for the Impatient - Chapter4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/scala-for-the-impatient-chapter3/">Solutions to Scala for the Impatient - Chapter3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/24/blocks-procs-lambdas/">Differences Among Blocks, Procs, and Lambdas in Ruby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2/">Solutions to Scala for the Impatient - Chapter1 and Chapter2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/25/threading-with-monitor-in-ruby/">Threading With Monitor in Ruby</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/103092209824087504629?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=0&speed=0&skin=&isTitle=0&noborder=1&isWeibo=0&isFans=&uid=1994207995&verifier=adfb3d94&dpc">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - George Sun -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'puffsun';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://puffsun.github.io/blog/2014/03/08/scala-for-the-impatient-chapter4/';
+        var disqus_url = 'http://puffsun.github.io/blog/2014/03/08/scala-for-the-impatient-chapter4/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
