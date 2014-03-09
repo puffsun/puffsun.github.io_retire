@@ -4,7 +4,7 @@
   <title><![CDATA[George's dream port]]></title>
   <link href="http://puffsun.github.io/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-03-09T20:09:42+08:00</updated>
+  <updated>2014-03-09T20:11:50+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -400,7 +400,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Solution to Scala for the Impatient - Chapter4]]></title>
+    <title type="html"><![CDATA[Solutions to Scala for the Impatient - Chapter4]]></title>
     <link href="http://puffsun.github.io/blog/2014/03/08/scala-for-the-impatient-chapter4/"/>
     <updated>2014-03-08T20:49:44+08:00</updated>
     <id>http://puffsun.github.io/blog/2014/03/08/scala-for-the-impatient-chapter4</id>
