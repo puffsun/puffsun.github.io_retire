@@ -9,7 +9,7 @@
   <meta name="author" content="George Sun">
 
   
-  <meta name="description" content="1. Set up a map of prices for a number of gizmos that you covet. Then produce a second map with the same keys and the prices at a 10 percent discount &hellip;">
+  <meta name="description" content="1. Improve the Counter class in Section 5.1, “Simple Classes and Parameterless Methods,” on page 49 so that it doesn’t turn negative at Int.MaxValue &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,68 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/09/scala-for-the-impatient-chapter5/">Solutions to Scala for the Impatient - Chapter5</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-09T20:03:35+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>1. Improve the Counter class in Section 5.1, “Simple Classes and Parameterless Methods,” on page 49 so that it doesn’t turn negative at <code>Int.MaxValue</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Counter</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">private</span> <span class="k">var</span> <span class="n">value</span> <span class="k">=</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">((</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">&lt;</span> <span class="nc">Int</span><span class="o">.</span><span class="nc">MaxValue</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">value</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">current</span> <span class="k">=</span> <span class="n">value</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/03/09/scala-for-the-impatient-chapter5/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -537,6 +599,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/09/scala-for-the-impatient-chapter5/">Solutions to Scala for the Impatient - Chapter5</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/08/scala-for-the-impatient-chapter4/">Solution to Scala for the Impatient - Chapter4</a>
       </li>
     
@@ -550,10 +616,6 @@
     
       <li class="post">
         <a href="/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2/">Solutions to Scala for the Impatient - Chapter1 and Chapter2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/25/threading-with-monitor-in-ruby/">Threading With Monitor in Ruby</a>
       </li>
     
   </ul>

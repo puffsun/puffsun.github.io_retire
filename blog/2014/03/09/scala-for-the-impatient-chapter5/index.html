@@ -1,0 +1,664 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Solutions to Scala for the Impatient - Chapter5 - George's dream port</title>
+  <meta name="author" content="George Sun">
+
+  
+  <meta name="description" content="Scala for the impatient solutions">
+  <meta name="keywords" content="Scala for the impatient solutions">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://puffsun.github.io/blog/2014/03/09/scala-for-the-impatient-chapter5">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="George's dream port" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+<meta name="keywords" content="Scala for the impatient solutions" />
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">George's dream port</a></h1>
+  
+    <h2>Programming thoughts</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:puffsun.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Solutions to Scala for the Impatient - Chapter5</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-09T20:03:35+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>1. Improve the Counter class in Section 5.1, “Simple Classes and Parameterless Methods,” on page 49 so that it doesn’t turn negative at <code>Int.MaxValue</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Counter</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">private</span> <span class="k">var</span> <span class="n">value</span> <span class="k">=</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">increment</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">((</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">&lt;</span> <span class="nc">Int</span><span class="o">.</span><span class="nc">MaxValue</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">value</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">current</span> <span class="k">=</span> <span class="n">value</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<p>2. Write a class <code>BankAccount</code> with methods <code>deposit</code> and <code>withdraw</code>, and a read-only property <code>balance</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">BankAccount</span><span class="o">(</span><span class="k">private</span> <span class="k">var</span> <span class="nc">_balance</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mf">0.0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">deposit</span><span class="o">(</span><span class="n">amount</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nc">_balance</span> <span class="o">+=</span> <span class="n">amount</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">withdraw</span><span class="o">(</span><span class="n">amount</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">balance</span> <span class="o">&gt;</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="nc">_balance</span> <span class="o">-=</span> <span class="n">amount</span>
+</span><span class='line'>      <span class="kc">true</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>      <span class="kc">false</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">balance</span> <span class="k">=</span> <span class="nc">_balance</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3. Write a class <code>Time</code> with read-only properties <code>hours</code> and <code>minutes</code> and a method <code>before(other: Time): Boolean</code> that checks whether this time comes before the other. A <code>Time</code> object should be constructed as <code>new Time(hrs, min)</code>, where hrs is in military time format (between 0 and 23).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Time</span><span class="o">(</span><span class="k">val</span> <span class="n">hours</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="k">val</span> <span class="n">minutes</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c1">// Validations goes here.</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">hours</span> <span class="o">&gt;</span> <span class="mi">23</span> <span class="o">||</span> <span class="n">hours</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;should larger than 0 or smaller than 23&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">minutes</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">minutes</span> <span class="o">&gt;</span> <span class="mi">59</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;should larger than 0 or small than 59&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">before</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">hours</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">hours</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">minutes</span> <span class="o">&lt;</span>  <span class="n">other</span><span class="o">.</span><span class="n">minutes</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">true</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="kc">false</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4. Reimplement the Time class from the preceding exercise so that the internal representation is the number of minutes since midnight (between 0 and 24 × 60 – 1). Do not change the public interface. That is, client code should be unaffected by your change.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Time</span><span class="o">(</span><span class="k">private</span> <span class="k">val</span> <span class="nc">_hours</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="k">private</span> <span class="k">val</span> <span class="nc">_minutes</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">hours</span> <span class="o">&gt;</span> <span class="mi">23</span> <span class="o">||</span> <span class="n">hours</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;should larger than 0 or smaller than 23&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">minutes</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">minutes</span> <span class="o">&gt;</span> <span class="mi">59</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;should larger than 0 or small than 59&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">private</span> <span class="k">val</span> <span class="nc">_total_minutes</span> <span class="k">=</span> <span class="nc">_hours</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="nc">_minutes</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">minutes</span> <span class="k">=</span> <span class="nc">_minutes</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">hours</span> <span class="k">=</span> <span class="nc">_hours</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">before</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">Time</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="nc">_total_minutes</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="nc">_total_minutes</span><span class="o">)</span>
+</span><span class='line'>      <span class="kc">true</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="kc">false</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>5. Make a class <code>Student</code> with read-write JavaBeans properties name (of type <code>String</code>) and id (of type <code>Long</code>). What methods are generated? (Use javap to check.) Can you call the JavaBeans getters and setters in Scala Should you?<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">scala.reflect.BeanProperty</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Student</span><span class="o">(</span><span class="nd">@BeanProperty</span> <span class="k">var</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="nd">@BeanProperty</span> <span class="k">var</span> <span class="n">id</span><span class="k">:</span> <span class="kt">Long</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">object</span> <span class="nc">Main</span> <span class="k">extends</span> <span class="nc">App</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">human</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Student</span><span class="o">(</span><span class="s">&quot;Dave Grohl&quot;</span><span class="o">,</span> <span class="mi">1337</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// You can call the JavaBeans getter and setter, just like this</span>
+</span><span class='line'>  <span class="n">human</span><span class="o">.</span><span class="n">setName</span><span class="o">(</span><span class="s">&quot;Kurt Cobain&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="n">human</span><span class="o">.</span><span class="n">setId</span><span class="o">(</span><span class="mi">5000</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// But why would you, when the Scala-esque methods are generated?</span>
+</span><span class='line'>  <span class="n">human</span><span class="o">.</span><span class="n">name</span> <span class="k">=</span> <span class="s">&quot;Krist Novoselic&quot;</span>
+</span><span class='line'>  <span class="n">human</span><span class="o">.</span><span class="n">id</span> <span class="k">=</span> <span class="mi">5001</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output of javap as below:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">$</span> <span class="n">javap</span> <span class="nc">Student</span>
+</span><span class='line'><span class="c1">// Compiled from &quot;ch5_exercises.scala&quot;</span>
+</span><span class='line'><span class="n">public</span> <span class="k">class</span> <span class="nc">Student</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">public</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="nc">String</span> <span class="n">name</span><span class="o">();</span>
+</span><span class='line'>  <span class="n">public</span> <span class="n">void</span> <span class="n">name_$eq</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="nc">String</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">public</span> <span class="n">void</span> <span class="n">setName</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="nc">String</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">public</span> <span class="n">long</span> <span class="n">id</span><span class="o">();</span>
+</span><span class='line'>  <span class="n">public</span> <span class="n">void</span> <span class="n">id_$eq</span><span class="o">(</span><span class="n">long</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">public</span> <span class="n">void</span> <span class="n">setId</span><span class="o">(</span><span class="n">long</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">public</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="nc">String</span> <span class="n">getName</span><span class="o">();</span>
+</span><span class='line'>  <span class="n">public</span> <span class="n">long</span> <span class="n">getId</span><span class="o">();</span>
+</span><span class='line'>  <span class="n">public</span> <span class="nc">Student</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="nc">String</span><span class="o">,</span> <span class="n">long</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can see that Scala generate getters/setters for you, as well as <code>name</code>, <code>name_=</code>, <code>id</code>, and <code>id_=</code>.</p>
+
+<p>6. In the <code>Person</code> class of Section 5.1, “Simple Classes and Parameterless Methods,” on page 49, provide a primary constructor that turns negative ages to 0.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Person</span><span class="o">(</span><span class="k">val</span> <span class="nc">_name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">var</span> <span class="nc">_age</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="nc">_age</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span>
+</span><span class='line'>    <span class="nc">_age</span> <span class="k">=</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">age</span> <span class="k">=</span> <span class="nc">_age</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">age_=</span><span class="o">(</span><span class="n">new_age</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">new_age</span> <span class="o">&gt;</span> <span class="nc">_age</span><span class="o">)</span>
+</span><span class='line'>      <span class="nc">_age</span> <span class="k">=</span> <span class="n">new_age</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>7. Write a class <code>Person</code> with a primary constructor that accepts a string containing a first name, a space, and a last name, such as <code>new Person(&ldquo;Fred Smith&rdquo;)</code>. Supply read-only properties <code>firstName</code> and <code>lastName</code>. Should the primary constructor parameter be a var, a val, or a plain parameter? Why?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Person</span><span class="o">(</span><span class="k">val</span> <span class="n">fullname</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">fullname</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">fullname</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">).</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;Name is not be in format of first_name last_name&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">private</span> <span class="k">val</span> <span class="n">tmp_name</span> <span class="k">=</span> <span class="n">fullname</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">firstName</span> <span class="k">=</span> <span class="n">tmp_name</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">lastName</span> <span class="k">=</span> <span class="n">tmp_name</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As the primary constructor parameter name suggests, it should be a val to prevent it from being changed, at the same time, it should have a public getter method so that others can get the person&rsquo;s full name.</p>
+
+<p>8. Make a class <code>Car</code> with read-only properties for <code>manufacturer</code>, <code>model name</code>, and <code>model year</code>, and a read-write property for the <code>license plate</code>. Supply four constructors. All require the <code>manufacturer</code> and <code>model name</code>. Optionally, <code>model year</code> and <code>license plate</code> can also be specified in the constructor. If not, the <code>model year</code> is set to -1 and the <code>license plate</code> to the empty string. Which constructor are you choosing as the primary constructor? Why?</p>
+
+<p>We only need primary constructor here, it can take default parameters, which we can leverage to eliminate the auxiliary constructor, as below code shown:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Car</span><span class="o">(</span><span class="k">val</span> <span class="n">manufacturer</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">modelName</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">modelYear</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">licensePlate</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>9. Reimplement the class of the preceding exercise in Java, C#, or C++ (your choice). How much shorter is the Scala class?</p>
+
+<p>Equivalent Java code as below:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Car</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">manufacturer</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">int</span> <span class="n">year</span><span class="o">;</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">licensePlate</span><span class="o">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">Class</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">,</span> <span class="kt">int</span> <span class="n">modelYear</span><span class="o">,</span> <span class="n">String</span> <span class="n">licensePlate</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">manufacturer</span> <span class="o">=</span> <span class="n">manufacturer</span><span class="o">;</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">modelName</span> <span class="o">=</span> <span class="n">modelName</span><span class="o">;</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">year</span> <span class="o">=</span> <span class="n">year</span><span class="o">;</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">licensePlate</span> <span class="o">=</span> <span class="n">licensePlate</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">Class</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">(</span><span class="n">manufacturer</span><span class="o">,</span> <span class="n">modelName</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">Class</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">,</span> <span class="kt">int</span> <span class="n">modelYear</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">(</span><span class="n">manufacturer</span><span class="o">,</span> <span class="n">modelName</span><span class="o">,</span> <span class="n">modelYear</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">Class</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">,</span> <span class="n">String</span> <span class="n">licensePlate</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">(</span><span class="n">manufacturer</span><span class="o">,</span> <span class="n">modelName</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">licensePlate</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// Getters and Setters neglected.</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>10. Consider the class</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Employee</span><span class="o">(</span><span class="k">val</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">var</span> <span class="n">salary</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">def</span> <span class="k">this</span><span class="o">()</span> <span class="o">{</span> <span class="k">this</span><span class="o">(</span><span class="s">&quot;John Q. Public&quot;</span><span class="o">,</span> <span class="mf">0.0</span><span class="o">)</span> <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Rewrite it to use explicit fields and a default primary constructor. Which form do you prefer? Why?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Employee</span><span class="o">(</span><span class="k">val</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;John Q. Public&quot;</span><span class="o">,</span> <span class="k">var</span> <span class="n">salary</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mf">0.0</span><span class="o">)</span> <span class="o">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I prefer to above code, using primary constructor with default parameters, also there&rsquo;s no explicit getters/setters. After falling love with Ruby programming language, I prefer to any coding style that can lead to concise and short code, most of time, short code is easy to maintain, to test and to develop.</p>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="https://bitbucket.org/McDamon/scalaimpatient/src/4a11167459b2/ch05/answers.txt">Scala for the Impatient, by McDamon</a><a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">George Sun</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-09T20:03:35+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/scala/'>Scala</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://puffsun.github.io/blog/2014/03/09/scala-for-the-impatient-chapter5/" data-via="" data-counturl="http://puffsun.github.io/blog/2014/03/09/scala-for-the-impatient-chapter5/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/08/scala-for-the-impatient-chapter4/" title="Previous Post: solution to scala for the impatient - chapter4">&laquo; solution to scala for the impatient - chapter4</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/1dc196afc203edd9f2633ec0b3fdcaa9?s=200" alt="Gravatar of George Sun " title="Gravatar of George Sun" />
+	</span>
+  <span>Software developer @ SAP Shanghai, China</span>
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/09/scala-for-the-impatient-chapter5/">Solutions to Scala for the Impatient - Chapter5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/08/scala-for-the-impatient-chapter4/">Solution to Scala for the Impatient - Chapter4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/scala-for-the-impatient-chapter3/">Solutions to Scala for the Impatient - Chapter3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/24/blocks-procs-lambdas/">Differences Among Blocks, Procs, and Lambdas in Ruby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2/">Solutions to Scala for the Impatient - Chapter1 and Chapter2</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/103092209824087504629?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="550" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=0&speed=0&skin=&isTitle=0&noborder=1&isWeibo=0&isFans=&uid=1994207995&verifier=adfb3d94&dpc">
+      </iframe>
+    </li>
+  </ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - George Sun -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'puffsun';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://puffsun.github.io/blog/2014/03/09/scala-for-the-impatient-chapter5/';
+        var disqus_url = 'http://puffsun.github.io/blog/2014/03/09/scala-for-the-impatient-chapter5/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
