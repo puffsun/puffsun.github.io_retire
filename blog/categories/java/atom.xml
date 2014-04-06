@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Java | George's dream port]]></title>
+  <link href="http://puffsun.github.io/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://puffsun.github.io/"/>
+  <updated>2014-04-06T20:59:28+08:00</updated>
+  <id>http://puffsun.github.io/</id>
+  <author>
+    <name><![CDATA[George Sun]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Enum, EnumSet, and EnumMap Sample]]></title>
+    <link href="http://puffsun.github.io/blog/2014/04/06/enum-enumset-enummap-sample/"/>
+    <updated>2014-04-06T20:50:38+08:00</updated>
+    <id>http://puffsun.github.io/blog/2014/04/06/enum-enumset-enummap-sample</id>
+    <content type="html"><![CDATA[<p><a href="http://docs.oracle.com/javase/tutorial/java/javaOO/enum.html">Enum</a> was introduced in Java 1.5, although the Java enum can be used with any Java collection, its full power is best leveraged when used with the <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html">EnumMap</a> and <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumSet.html">EnumSet</a>.</p>
+
+<p>Why should you use <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html">EnumMap</a> and <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumSet.html">EnumSet</a>, rather than their counterparts <a href="http://docs.oracle.com/javase/7/docs/api/java/util/HashMap.html">HashMap</a> and <a href="http://docs.oracle.com/javase/7/docs/api/java/util/HashSet.html">HashSet</a>. The primary reason boil down to performance and memory usage advantage. Let&rsquo;s see their JavaDoc firstly.</p>
+
+<!-- more -->
+
+
+<p>Document of <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html">EnumMap</a>:</p>
+
+<blockquote><p>A specialized Map implementation for use with enum type keys. All of the keys in an enum map must come from a single enum type that is specified, explicitly or implicitly, when the map is created. Enum maps are represented internally as arrays. This representation is extremely compact and efficient.
+&hellip;
+Implementation note: All basic operations execute in constant time. They are likely (though not guaranteed) to be faster than their HashMap counterparts.</p></blockquote>
+
+<p>Document of <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumSet.html">EnumSet</a>:</p>
+
+<blockquote><p>A specialized Set implementation for use with enum types. All of the elements in an enum set must come from a single enum type that is specified, explicitly or implicitly, when the set is created. Enum sets are represented internally as bit vectors. This representation is extremely compact and efficient. The space and time performance of this class should be good enough to allow its use as a high-quality, typesafe alternative to traditional int-based &ldquo;bit flags.&rdquo; Even bulk operations (such as containsAll and retainAll) should run very quickly if their argument is also an enum set.
+&hellip;
+Implementation note: All basic operations execute in constant time. They are likely (though not guaranteed) to be much faster than their HashSet counterparts. Even bulk operations execute in constant time if their argument is also an enum set.</p></blockquote>
+
+<p>Both of <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html">EnumMap</a> and <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumSet.html">EnumSet</a> belong to <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/collections/index.html">Java Collections Framework</a>, so they&rsquo;re easy to use because as Java developer, you should familiar with <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/collections/index.html">Java Collections Framework</a>; in the mean time, they&rsquo;re compact and efficient,  they&rsquo;re also enum-powered collections which are easy to use, you can see that in below sample code.</p>
+
+<p>First, let&rsquo;s see an enum deifiniation:
+```java
+import java.util.EnumSet;</p>
+
+<p>public enum Weekday {</p>
+
+<pre><code>MONDAY {
+    @Override
+    public String getDetail() {
+        return "Monday";
+    }
+},
+
+TUESDAY {
+    @Override
+    public String getDetail() {
+        return "Tuesday";
+    }
+},
+
+WEDNESDAY {
+    @Override
+    public String getDetail() {
+        return "Wednesday";
+    }
+},
+
+THURSDAY {
+    @Override
+    public String getDetail() {
+        return "Thursday";
+    }
+},
+
+FRIDAY {
+    @Override
+    public String getDetail() {
+        return "Friday";
+    }
+},
+
+SATURDAY {
+    @Override
+    public String getDetail() {
+        return "Saturday";
+    }
+},
+
+SUNDAY {
+    @Override
+    public String getDetail() {
+        return "Sunday";
+    }
+};
+
+public abstract String getDetail();
+
+public static final EnumSet&lt;Weekday&gt; WORKDAYS = EnumSet.range(MONDAY, FRIDAY);
+
+public final boolean isWorkday() {
+    return WORKDAYS.contains(this);
+}
+
+public static final EnumSet&lt;Weekday&gt; THE_WHOLE_WEEK = EnumSet.allOf(Weekday.class);
+</code></pre>
+
+<p>}
+```
+You can see that one of interesting feature of Java enum is that you can declare <strong>abstract methods</strong>, in above example getDetail() is the abstract method and all the enum fields have implemented it. You can check some other details of Java enum <a href="http://docs.oracle.com/javase/tutorial/java/javaOO/enum.html">here</a>.</p>
+
+<p>Let&rsquo;s move on to our sample code of <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html">EnumMap</a> and <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumSet.html">EnumSet</a>.</p>
+
+<p>```java
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;</p>
+
+<p>public final class EnumSetExample {</p>
+
+<pre><code>public static void main(String... args) {
+    System.out.println("Work Schedule:");
+
+    for (Weekday weekday : Weekday.THE_WHOLE_WEEK) {
+        String action = weekday.isWorkday()
+                ? "have to work"
+                : "can relax";
+        // Enum.ordinal starts with 0
+        System.out.println(String.format("%d. On %s you " + action + ".", weekday.ordinal() + 1, weekday));
+    }
+
+    System.out.println("Do I have to work the whole week?");
+
+    String result = Weekday.WORKDAYS.containsAll(Weekday.THE_WHOLE_WEEK)
+            ? "Yes, unfortunately."
+            : "Certainly not.";
+    System.out.println(result);
+
+    final EnumSet&lt;Weekday&gt; weekend = Weekday.THE_WHOLE_WEEK.clone();
+    weekend.removeAll(Weekday.WORKDAYS);
+
+    System.out.println(String.format("The weekend is %d days long.", weekend.size()));
+
+    // EnumMap example
+    EnumMap&lt;Weekday, String&gt; eMap = new EnumMap&lt;&gt;(Weekday.class);
+    for (Weekday day : Weekday.THE_WHOLE_WEEK) {
+        eMap.put(day, day.getDetail());
+    }
+
+    System.out.println("Print weekdays:");
+    for (Map.Entry&lt;Weekday, String&gt; entry : eMap.entrySet()) {
+        System.out.println(entry.getKey() + "\t" + entry.getValue());
+    }
+}
+</code></pre>
+
+<p>}
+```
+You can run above source code by yourself, check the result then find related API of <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html">EnumMap</a> and <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumSet.html">EnumSet</a>. The above source code makes use of the following features in Java.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
+
+<ul>
+<li>enum keyword</li>
+<li>enum custom methods</li>
+<li>enum toString() method</li>
+<li>EnumSet#range()</li>
+<li>EnumSet#allOf()</li>
+<li>EnumSet#clone()</li>
+<li>EnumSet#removeAll()</li>
+<li>EnumSet#size()</li>
+<li>EnumSet iteration</li>
+<li>String#format()</li>
+<li>EnumMap construction and iteration</li>
+</ul>
+
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="https://weblogs.java.net/blog/mkarg/archive/2010/01/03/fun-enumset">Fun with EnumSet</a><a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>
