@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>George's dream port</title>
+  <title>Singleton Pattern in Java - George's dream port</title>
   <meta name="author" content="George Sun">
 
   
-  <meta name="description" content="The Singleton pattern is deceptively simple, even and especially for Java developers, but it presents a number of pitfalls for the unwary Java &hellip;">
-  
+  <meta name="description" content="Singleton Design Pattern AccessibleObject Java MultiThreading Classloader">
+  <meta name="keywords" content="Singleton Design Pattern AccessibleObject Java MultiThreading Classloader">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://puffsun.github.io">
+  <link rel="canonical" href="http://puffsun.github.io/blog/2014/04/07/singleton-pattern-in-java">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="George's dream port" type="application/atom+xml">
@@ -30,7 +30,7 @@
 <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 
 
-<meta name="keywords" content="Ruby, Java, Tech blog, Programming" />
+<meta name="keywords" content="Singleton Design Pattern AccessibleObject Java MultiThreading Classloader" />
 
   
 
@@ -66,15 +66,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/04/07/singleton-pattern-in-java/">Singleton Pattern in Java</a></h1>
+      <h1 class="entry-title">Singleton Pattern in Java</h1>
     
     
       <p class="meta">
@@ -97,7 +94,7 @@
   </header>
 
 
-  <div class="entry-content"><p>The Singleton pattern is deceptively simple, even and especially for Java developers, but it presents a number of pitfalls for the unwary Java developer which make it hard to implement properly. In this article, I&rsquo;ll talk about several ways to implement the Singleton pattern in Java, and leave it to you to decide which one is best suited for you circumstance depending on your requirement.</p>
+<div class="entry-content"><p>The Singleton pattern is deceptively simple, even and especially for Java developers, but it presents a number of pitfalls for the unwary Java developer which make it hard to implement properly. In this article, I&rsquo;ll talk about several ways to implement the Singleton pattern in Java, and leave it to you to decide which one is best suited for you circumstance depending on your requirement.</p>
 
 <p>With the Singleton design pattern you can:</p>
 
@@ -528,69 +525,16 @@
 </div>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/04/06/service-provider-frameworks-pattern/">Service Provider Frameworks</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">George Sun</span></span>
 
-<time datetime="2014-04-06T22:39:44+08:00" pubdate data-updated="true">Apr 6<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Overview</h3>
-
-<p>In <a href="http://www.amazon.com/Effective-Java-Edition-Joshua-Bloch/dp/0321356683">Effective Java, second edition</a>, the author mentioned a pattern called Service Provider frameworks. The author wrote:</p>
-
-<blockquote><p>A service provider framework is a system in which multiple service providers implement a service, and the system makes the implementations available to its clients, decoupling them from the implementations.</p></blockquote>
-
-<p>In this blog post, I&rsquo;ll talk about the details of Service Provider Frameworks thru it&rsquo;s application in JDK, to be specific, in JDBC and Codec lookup.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/04/06/service-provider-frameworks-pattern/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/04/06/enum-enumset-enummap-sample/">Enum, EnumSet, and EnumMap Sample</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -602,395 +546,46 @@
   
 
 
-<time datetime="2014-04-06T20:50:38+08:00" pubdate data-updated="true">Apr 6<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://docs.oracle.com/javase/tutorial/java/javaOO/enum.html">Enum</a> was introduced in Java 1.5, although the Java enum can be used with any Java collection, its full power is best leveraged when used with the <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html">EnumMap</a> and <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumSet.html">EnumSet</a>.</p>
-
-<p>Why should you use <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html">EnumMap</a> and <a href="http://docs.oracle.com/javase/7/docs/api/java/util/EnumSet.html">EnumSet</a>, rather than their counterparts <a href="http://docs.oracle.com/javase/7/docs/api/java/util/HashMap.html">HashMap</a> and <a href="http://docs.oracle.com/javase/7/docs/api/java/util/HashSet.html">HashSet</a>. The primary reason boil down to performance and memory usage advantage. Let&rsquo;s see their JavaDoc firstly.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/04/06/enum-enumset-enummap-sample/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2014-04-07T06:54:11+08:00" pubdate data-updated="true">Apr 7<span>th</span>, 2014</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/09/scala-for-the-impatient-chapter5/">Solutions to Scala for the Impatient - Chapter5</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
 
 
-<time datetime="2014-03-09T20:03:35+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>1. Improve the Counter class in Section 5.1, “Simple Classes and Parameterless Methods,” on page 49 so that it doesn’t turn negative at <code>Int.MaxValue</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Counter</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">private</span> <span class="k">var</span> <span class="n">value</span> <span class="k">=</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="n">increment</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="o">((</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">&lt;</span> <span class="nc">Int</span><span class="o">.</span><span class="nc">MaxValue</span><span class="o">)</span>
-</span><span class='line'>      <span class="n">value</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="k">def</span> <span class="n">current</span> <span class="k">=</span> <span class="n">value</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://puffsun.github.io/blog/2014/04/07/singleton-pattern-in-java/" data-via="" data-counturl="http://puffsun.github.io/blog/2014/04/07/singleton-pattern-in-java/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/03/09/scala-for-the-impatient-chapter5/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/08/scala-for-the-impatient-chapter4/">Solutions to Scala for the Impatient - Chapter4</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-08T20:49:44+08:00" pubdate data-updated="true">Mar 8<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>1. Set up a map of prices for a number of gizmos that you covet. Then produce a second map with the same keys and the prices at a 10 percent discount.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">books</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;Scala for the Impatient&quot;</span> <span class="o">-&gt;</span> <span class="mi">30</span><span class="o">,</span> <span class="s">&quot;Ruby under a Microscope&quot;</span> <span class="o">-&gt;</span> <span class="mi">40</span><span class="o">,</span> <span class="s">&quot;Ruby Cookbook&quot;</span> <span class="o">-&gt;</span> <span class="mi">35</span><span class="o">)</span>
-</span><span class='line'><span class="k">val</span> <span class="n">discounted</span> <span class="k">=</span> <span class="k">for</span><span class="o">((</span><span class="n">b</span><span class="o">,</span> <span class="n">p</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">books</span><span class="o">)</span> <span class="k">yield</span> <span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">p</span> <span class="o">*</span> <span class="mf">0.9</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/03/08/scala-for-the-impatient-chapter4/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2014/04/06/service-provider-frameworks-pattern/" title="Previous Post: service provider frameworks">&laquo; service provider frameworks</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/07/scala-for-the-impatient-chapter3/">Solutions to Scala for the Impatient - Chapter3</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-07T23:01:32+08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In this blog post, I will continue to post the solutions to <a href="http://www.amazon.com/Scala-Impatient-Cay-S-Horstmann/dp/0321774094">Scala for the Impatient</a>, Chapter 3 as book notes, hopes it could help if you&rsquo;re reading the book too. Without further ado, let&rsquo;s see the solutions in Scala.</p>
-
-<p>1. Write a code snippet that sets a to an array of n random integers between 0 (inclusive) and n (exclusive).</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">scala.util.Random</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="n">random_arr</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nc">Array</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="n">n</span><span class="o">)</span> <span class="o">{</span><span class="nc">Random</span><span class="o">.</span><span class="n">nextInt</span><span class="o">(</span><span class="n">n</span><span class="o">)}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/03/07/scala-for-the-impatient-chapter3/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/24/blocks-procs-lambdas/">Differences Among Blocks, Procs, and Lambdas in Ruby</a></h1>
-    
-    
-      <p class="meta">
-        
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-24T22:17:52+08:00" pubdate data-updated="true">Feb 24<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Almost every Rubyist love Ruby&rsquo;s Blocks, as well as Procs and Lambdas. These features allow you to pass code to a method then execute the piece of code at a later time. In this blog post, I&rsquo;ll talk about the differences among them.</p>
-
-<h3>Blocks</h3>
-
-<p>A block is a piece of code passed to a method via curly braces <code>{&hellip;}</code> or <code>do&hellip;end</code>. By convention, <code>{&hellip;}</code> is used within one line of code while <code>do&hellip;end</code> for multi-line code. After passing into method, the block could be triggered later by <code>yield</code> keyword to get a return value. The <code>yield</code> keyword can accept parameters, which will be passed into the block it&rsquo;s calling at that time. Let&rsquo;s see a example:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">try</span>
-</span><span class='line'>  <span class="k">yield</span> <span class="k">if</span> <span class="nb">block_given?</span>
-</span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;no block&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/24/blocks-procs-lambdas/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2/">Solutions to Scala for the Impatient - Chapter1 and Chapter2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-24T20:09:58+08:00" pubdate data-updated="true">Feb 24<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Recently I&rsquo;m reading the book <a href="http://www.amazon.com/Scala-Impatient-Cay-S-Horstmann/dp/0321774094">Scala for the Impatient</a>, the book is pretty brilliant, you can see that from the comments. Since I&rsquo;m a newbie to Scala, I&rsquo;m try to complete the exercises after every chapter, I post the solutions in a serious of blog posts as book notes.</p>
-
-<p>Since both chapter 1 and chapter 2 are very simple, I&rsquo;ll post the solutions together here with this blog post.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/24/scala-for-the-impatient-solutions-ch1-and-ch2/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/25/threading-with-monitor-in-ruby/">Threading With Monitor in Ruby</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-25T00:45:07+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Write multi-threaded program is pretty straightforward in Ruby, there&rsquo;s a Thread class that help to achieve parallelism code. If you didn&rsquo;t know thread or don&rsquo;t know how to write multi-threaded code in Ruby, I encourage you stop reading this blog post, move to this brilliant tutorial <a href="http://www.tutorialspoint.com/ruby/ruby_multithreading.htm">Ruby Multithreading</a> to learn the basics of the Thread in Ruby.</p>
-
-<p>Well, this blog post will show you how to make your life easier as a Ruby developer when you faced with multi-threading &mdash; the MonitorMixin library, it&rsquo;s one of my favourite libraries. It make the task of writing complex synchronisation logic easy which is hard to write using a simple exclusive locking mechanism. MonitorMixin lets you write a nested lock, so you can use it as a more convenient version of plain old Mutex.</p>
-
-<p>Let&rsquo;s see an example with deadlock, then we resolve it with MonitorMixin library.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/01/25/threading-with-monitor-in-ruby/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/24/bindings-in-ruby/">Bindings in Ruby</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-24T14:43:40+08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Binding overview</h3>
-
-<p>In Ruby, bindings can be made available by calling binding method, which is a Kernel method that returns Binding object. Let&rsquo;s see the <a href="http://www.ruby-doc.org/core-2.1.0/Binding.html">rdoc</a> of Binding object:</p>
-
-<blockquote><p>Objects of class Binding encapsulate the execution context at some particular place in the code and retain this context for future use. The variables, methods, value of self, and possibly an iterator block that can be accessed in this context are all retained. Binding objects can be created using Kernel#binding, and are made available to the callback of Kernel#set_trace_func. These binding objects can be passed as the second argument of the Kernel#eval method, establishing an environment for the evaluation.</p></blockquote>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/01/24/bindings-in-ruby/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     
@@ -1062,6 +657,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -1076,7 +672,10 @@
       var disqus_shortname = 'puffsun';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://puffsun.github.io/blog/2014/04/07/singleton-pattern-in-java/';
+        var disqus_url = 'http://puffsun.github.io/blog/2014/04/07/singleton-pattern-in-java/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
