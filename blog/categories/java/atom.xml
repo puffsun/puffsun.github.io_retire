@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | George's dream port]]></title>
   <link href="http://puffsun.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-04-07T07:20:56+08:00</updated>
+  <updated>2014-04-07T07:22:55+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -316,7 +316,7 @@ public static PrivilegedSingleton getInstance() {
 
 <p>}
 ```
-Sometimes, your IDE will remind you that the <code>INSTANCE</code> variable will never be null, don&rsquo;t rely on that, IDE can make mistake too.</p>
+Sometimes, your IDE may remind you that the <code>INSTANCE</code> variable will never be null, don&rsquo;t rely on that, IDE can make mistake too.</p>
 <div class="footnotes">
 <hr/>
 <ol>
