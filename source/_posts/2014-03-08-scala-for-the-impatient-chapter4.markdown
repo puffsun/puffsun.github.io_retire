@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "solution to scala for the impatient - chapter4"
+title: "solutions to scala for the impatient - chapter4"
 date: 2014-03-08 20:49:44 +0800
 comments: true
 categories: Scala
