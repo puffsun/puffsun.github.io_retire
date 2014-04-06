@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | George's dream port]]></title>
   <link href="http://puffsun.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-04-07T07:22:55+08:00</updated>
+  <updated>2014-04-07T07:41:09+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -269,15 +269,45 @@ As you can see, until we need an instance, the LazyHolder class will not be init
 <p>As of release 1.5, there is a another approach to implementing singletons. which provide implicit support for thread safety and only one instance is guaranteed. This is also a good way to have singleton with minimum effort. Simply make an enum type with one element:
 ```java
 // Enum singleton &ndash; the preferred approach
-public enum Elvis {</p>
+public enum LazyEnumSingleton {</p>
 
 <pre><code>INSTANCE;
-public void leaveTheBuilding() { ... }
+public void otherMethods() { System.out.println("Other methods go"); }
 </code></pre>
 
 <p>}
-```
-This approach is functionally equivalent to the public field approach, except that it is more concise, provides the serialization machinery for free, and provides an ironclad guarantee against multiple instantiation, even in the face of sophisticated serialization or reflection attacks. While this approach has yet to be widely adopted, <strong>a single-element enum type is the best way to implement a singleton</strong>.</p>
+```</p>
+
+<p>This approach is functionally equivalent to the public field approach, except that it is more concise, provides the serialization machinery for free, and provides an ironclad guarantee against multiple instantiation, even in the face of sophisticated serialization or reflection attacks. While this approach has yet to be widely adopted, <strong>a single-element enum type is the best way to implement a singleton</strong>. JVM does the lazy-loading in a thread-safe manner. That&rsquo;s why using this kind of lazy class loading is the preferred method—the JVM handles all the synchronization. We can see that with below little example code, try run it your self:
+```java
+public class LazyEnumSingletonExample {</p>
+
+<pre><code>public static void main(String[] args) throws InterruptedException {
+    System.out.println("Accessing enum for the first time.");
+    LazyEnumSingleton lazy = LazyEnumSingleton.INSTANCE;
+    System.out.println("Done.");
+}
+</code></pre>
+
+<p>}</p>
+
+<p>enum LazyEnumSingleton {</p>
+
+<pre><code>INSTANCE;
+
+static {
+    System.out.println("Initialize in process...");
+}
+</code></pre>
+
+<p>}
+<code>
+Output of the code:
+</code>
+Accessing enum for the first time.
+Initialize in process&hellip;
+Done.
+```</p>
 
 <h3>Preventing privileged clients</h3>
 

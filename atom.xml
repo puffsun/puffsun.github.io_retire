@@ -4,7 +4,7 @@
   <title><![CDATA[George's dream port]]></title>
   <link href="http://puffsun.github.io/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-04-07T07:22:55+08:00</updated>
+  <updated>2014-04-07T07:41:09+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -371,14 +371,58 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// Enum singleton - the preferred approach</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">enum</span> <span class="n">Elvis</span> <span class="o">{</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">enum</span> <span class="n">LazyEnumSingleton</span> <span class="o">{</span>
 </span><span class='line'>    <span class="n">INSTANCE</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">leaveTheBuilding</span><span class="o">()</span> <span class="o">{</span> <span class="o">...</span> <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">otherMethods</span><span class="o">()</span> <span class="o">{</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Other methods go&quot;</span><span class="o">);</span> <span class="o">}</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This approach is functionally equivalent to the public field approach, except that it is more concise, provides the serialization machinery for free, and provides an ironclad guarantee against multiple instantiation, even in the face of sophisticated serialization or reflection attacks. While this approach has yet to be widely adopted, <strong>a single-element enum type is the best way to implement a singleton</strong>.</p>
+<p>This approach is functionally equivalent to the public field approach, except that it is more concise, provides the serialization machinery for free, and provides an ironclad guarantee against multiple instantiation, even in the face of sophisticated serialization or reflection attacks. While this approach has yet to be widely adopted, <strong>a single-element enum type is the best way to implement a singleton</strong>. JVM does the lazy-loading in a thread-safe manner. That&rsquo;s why using this kind of lazy class loading is the preferred method—the JVM handles all the synchronization. We can see that with below little example code, try run it your self:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LazyEnumSingletonExample</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Accessing enum for the first time.&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">LazyEnumSingleton</span> <span class="n">lazy</span> <span class="o">=</span> <span class="n">LazyEnumSingleton</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Done.&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">enum</span> <span class="n">LazyEnumSingleton</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">INSTANCE</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">static</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Initialize in process...&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Output of the code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Accessing</span> <span class="kd">enum</span> <span class="k">for</span> <span class="n">the</span> <span class="n">first</span> <span class="n">time</span><span class="o">.</span>
+</span><span class='line'><span class="n">Initialize</span> <span class="n">in</span> <span class="n">process</span><span class="o">...</span>
+</span><span class='line'><span class="n">Done</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>Preventing privileged clients</h3>
 
