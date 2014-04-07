@@ -9,7 +9,7 @@
   <meta name="author" content="George Sun">
 
   
-  <meta name="description" content="The Singleton pattern is deceptively simple, even and especially for Java developers, but it presents a number of pitfalls for the unwary Java &hellip;">
+  <meta name="description" content="There&rsquo;re several useful classes under package java.lang.ref.*, which seems to be a little-known feature. That&rsquo;s what I&rsquo;m going to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/07/understanding-java-dot-lang-dot-ref-package/">Understanding java.lang.ref Package</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-07T15:03:55+08:00" pubdate data-updated="true">Apr 7<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>There&rsquo;re several useful classes under package <code>java.lang.ref.*</code>, which seems to be a little-known feature. That&rsquo;s what I&rsquo;m going to talk about in this blog post.</p>
+
+<h3>A Program with Memory Leak</h3>
+
+<p>As Java developer, most of time, you should not pay attention to memory management, JVM GC do that job for you automatically. It can easily lead to the impression that you don’t have to think about memory management, but this isn’t quite true. Consider the following simple cache implementation:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/04/07/understanding-java-dot-lang-dot-ref-package/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -514,51 +559,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/24/bindings-in-ruby/">Bindings in Ruby</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-24T14:43:40+08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Binding overview</h3>
-
-<p>In Ruby, bindings can be made available by calling binding method, which is a Kernel method that returns Binding object. Let&rsquo;s see the <a href="http://www.ruby-doc.org/core-2.1.0/Binding.html">rdoc</a> of Binding object:</p>
-
-<blockquote><p>Objects of class Binding encapsulate the execution context at some particular place in the code and retain this context for future use. The variables, methods, value of self, and possibly an iterator block that can be accessed in this context are all retained. Binding objects can be created using Kernel#binding, and are made available to the callback of Kernel#set_trace_func. These binding objects can be passed as the second argument of the Kernel#eval method, establishing an environment for the evaluation.</p></blockquote>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/01/24/bindings-in-ruby/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -582,6 +582,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/07/understanding-java-dot-lang-dot-ref-package/">Understanding java.lang.ref Package</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/07/singleton-pattern-in-java/">Singleton Pattern in Java</a>
       </li>
     
@@ -595,10 +599,6 @@
     
       <li class="post">
         <a href="/blog/2014/03/09/scala-for-the-impatient-chapter5/">Solutions to Scala for the Impatient - Chapter5</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/08/scala-for-the-impatient-chapter4/">Solutions to Scala for the Impatient - Chapter4</a>
       </li>
     
   </ul>
