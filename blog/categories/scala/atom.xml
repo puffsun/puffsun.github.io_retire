@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Scala | George's dream port]]></title>
   <link href="http://puffsun.github.io/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-04-07T15:16:43+08:00</updated>
+  <updated>2014-07-11T21:51:42+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -228,33 +228,52 @@ public class Car {</p>
 
 <pre><code>private String manufacturer;
 private String modelName;
-private int year;
+private int modelYear;
 private String licensePlate;
 
-public Class(String manufacturer, String modelName, int modelYear, String licensePlate) {
+public Car(String manufacturer, String modelName, int modelYear, String licensePlate) {
     this.manufacturer = manufacturer;
     this.modelName = modelName;
-    this.year = year;
+    this.modelYear = modelYear;
     this.licensePlate = licensePlate;
 }
 
-public Class(String manufacturer, String modelName) {
+public Car(String manufacturer, String modelName) {
     this(manufacturer, modelName, -1, "");
 }
 
-public Class(String manufacturer, String modelName, int modelYear) {
+public Car(String manufacturer, String modelName, int modelYear) {
     this(manufacturer, modelName, modelYear, "");
 }
 
-public Class(String manufacturer, String modelName, String licensePlate) {
+public Car(String manufacturer, String modelName, String licensePlate) {
     this(manufacturer, modelName, -1, licensePlate);
 }
 
-// Getters and Setters neglected.
+public String getManufacturer() {
+    return manufacturer;
+}
+
+public String getModelName() {
+    return modelName;
+}
+
+public int getModelYear() {
+    return modelYear;
+}
+
+public String getLicensePlate() {
+    return licensePlate;
+}
+
+public void setLicensePlate(String licensePlate) {
+    this.licensePlate = licensePlate;
+}
 </code></pre>
 
-<p>}
-```</p>
+<p>}</p>
+
+<p>```</p>
 
 <p>10. Consider the class
 <code>scala

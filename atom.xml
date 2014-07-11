@@ -4,7 +4,7 @@
   <title><![CDATA[George's dream port]]></title>
   <link href="http://puffsun.github.io/atom.xml" rel="self"/>
   <link href="http://puffsun.github.io/"/>
-  <updated>2014-04-07T15:16:43+08:00</updated>
+  <updated>2014-07-11T21:51:42+08:00</updated>
   <id>http://puffsun.github.io/</id>
   <author>
     <name><![CDATA[George Sun]]></name>
@@ -1673,32 +1673,68 @@ Implementation note: All basic operations execute in constant time. They are lik
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
 <span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Car</span> <span class="o">{</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">manufacturer</span><span class="o">;</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">;</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="kt">int</span> <span class="n">year</span><span class="o">;</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">licensePlate</span><span class="o">;</span>
-</span><span class='line'>  
-</span><span class='line'>  <span class="kd">public</span> <span class="nf">Class</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">,</span> <span class="kt">int</span> <span class="n">modelYear</span><span class="o">,</span> <span class="n">String</span> <span class="n">licensePlate</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">manufacturer</span> <span class="o">=</span> <span class="n">manufacturer</span><span class="o">;</span>
-</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">modelName</span> <span class="o">=</span> <span class="n">modelName</span><span class="o">;</span>
-</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">year</span> <span class="o">=</span> <span class="n">year</span><span class="o">;</span>
-</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">licensePlate</span> <span class="o">=</span> <span class="n">licensePlate</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  
-</span><span class='line'>  <span class="kd">public</span> <span class="nf">Class</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="o">(</span><span class="n">manufacturer</span><span class="o">,</span> <span class="n">modelName</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  
-</span><span class='line'>  <span class="kd">public</span> <span class="nf">Class</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">,</span> <span class="kt">int</span> <span class="n">modelYear</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="o">(</span><span class="n">manufacturer</span><span class="o">,</span> <span class="n">modelName</span><span class="o">,</span> <span class="n">modelYear</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  
-</span><span class='line'>  <span class="kd">public</span> <span class="nf">Class</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">,</span> <span class="n">String</span> <span class="n">licensePlate</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="o">(</span><span class="n">manufacturer</span><span class="o">,</span> <span class="n">modelName</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">licensePlate</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  
-</span><span class='line'>  <span class="c1">// Getters and Setters neglected.</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">manufacturer</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">modelYear</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">licensePlate</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">Car</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">,</span> <span class="kt">int</span> <span class="n">modelYear</span><span class="o">,</span> <span class="n">String</span> <span class="n">licensePlate</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">manufacturer</span> <span class="o">=</span> <span class="n">manufacturer</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">modelName</span> <span class="o">=</span> <span class="n">modelName</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">modelYear</span> <span class="o">=</span> <span class="n">modelYear</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">licensePlate</span> <span class="o">=</span> <span class="n">licensePlate</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">Car</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">(</span><span class="n">manufacturer</span><span class="o">,</span> <span class="n">modelName</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">Car</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">,</span> <span class="kt">int</span> <span class="n">modelYear</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">(</span><span class="n">manufacturer</span><span class="o">,</span> <span class="n">modelName</span><span class="o">,</span> <span class="n">modelYear</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">Car</span><span class="o">(</span><span class="n">String</span> <span class="n">manufacturer</span><span class="o">,</span> <span class="n">String</span> <span class="n">modelName</span><span class="o">,</span> <span class="n">String</span> <span class="n">licensePlate</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">(</span><span class="n">manufacturer</span><span class="o">,</span> <span class="n">modelName</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">licensePlate</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getManufacturer</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">manufacturer</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getModelName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">modelName</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getModelYear</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">modelYear</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getLicensePlate</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">licensePlate</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLicensePlate</span><span class="o">(</span><span class="n">String</span> <span class="n">licensePlate</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">licensePlate</span> <span class="o">=</span> <span class="n">licensePlate</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
