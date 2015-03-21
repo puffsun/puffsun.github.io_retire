@@ -174,32 +174,51 @@ class Car(val manufacturer: String,
 Equivalent Java code as below: 
 ```java
 public class Car {
-	private String manufacturer;
-	private String modelName;
-	private int year;
-	private String licensePlate;
-	
-	public Class(String manufacturer, String modelName, int modelYear, String licensePlate) {
-		this.manufacturer = manufacturer;
-		this.modelName = modelName;
-		this.year = year;
-		this.licensePlate = licensePlate;
-	}
-	
-	public Class(String manufacturer, String modelName) {
-		this(manufacturer, modelName, -1, "");
-	}
-	
-	public Class(String manufacturer, String modelName, int modelYear) {
-		this(manufacturer, modelName, modelYear, "");
-	}
-	
-	public Class(String manufacturer, String modelName, String licensePlate) {
-		this(manufacturer, modelName, -1, licensePlate);
-	}
-	
-	// Getters and Setters neglected.
+    private String manufacturer;
+    private String modelName;
+    private int modelYear;
+    private String licensePlate;
+
+    public Car(String manufacturer, String modelName, int modelYear, String licensePlate) {
+        this.manufacturer = manufacturer;
+        this.modelName = modelName;
+        this.modelYear = modelYear;
+        this.licensePlate = licensePlate;
+    }
+
+    public Car(String manufacturer, String modelName) {
+        this(manufacturer, modelName, -1, "");
+    }
+
+    public Car(String manufacturer, String modelName, int modelYear) {
+        this(manufacturer, modelName, modelYear, "");
+    }
+
+    public Car(String manufacturer, String modelName, String licensePlate) {
+        this(manufacturer, modelName, -1, licensePlate);
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public int getModelYear() {
+        return modelYear;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
 }
+
 ```
 
 10\. Consider the class
